@@ -1,225 +1,1278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bank 1 Case System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Final Merged Master Checklist — Timeline Order</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#121a2b;
+      --panel2:#18233a;
+      --line:#2b3a5f;
+      --text:#eaf0ff;
+      --muted:#a9b6d3;
+      --accent:#6ea8fe;
+      --accent2:#8ef0c4;
+      --warn:#ffd166;
+      --danger:#ff7b7b;
+      --good:#7ee787;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#08101f 0%, #0d1424 100%);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:1400px;
+      margin:0 auto;
+      padding:20px;
+    }
+    .top{
+      background:linear-gradient(135deg,#111b31,#162541);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(26px,3vw,40px);
+      line-height:1.1;
+    }
+    .subtitle{
+      color:var(--muted);
+      line-height:1.5;
+      margin-bottom:14px;
+    }
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--line);
+      background:#0e1729;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+    }
+    .toolbar{
+      display:grid;
+      grid-template-columns: 1.4fr repeat(9, auto);
+      gap:10px;
+      align-items:center;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:var(--shadow);
+      position:sticky;
+      top:10px;
+      z-index:10;
+      margin-bottom:18px;
+    }
+    .toolbar input[type="search"]{
+      width:100%;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0b1324;
+      color:var(--text);
+      outline:none;
+      font-size:15px;
+    }
+    .toolbar button, .toolbar label.btn{
+      border:1px solid var(--line);
+      background:var(--panel2);
+      color:var(--text);
+      padding:12px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+      transition:.15s ease;
+      white-space:nowrap;
+      text-align:center;
+      user-select:none;
+    }
+    .toolbar button:hover, .toolbar label.btn:hover{
+      transform:translateY(-1px);
+      border-color:var(--accent);
+    }
+    .toolbar input[type="checkbox"]{
+      display:none;
+    }
 
-<style>
-body {font-family:Arial;background:#0b1020;color:#eaf0ff;padding:15px;}
-h1 {margin-bottom:10px;}
-input {width:100%;padding:10px;margin-bottom:15px;border-radius:8px;border:none;}
+    .stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .stat{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      min-width:140px;
+      box-shadow:var(--shadow);
+    }
+    .stat .n{
+      font-size:24px;
+      font-weight:700;
+      color:var(--accent2);
+    }
+    .stat .l{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:4px;
+    }
 
-.section {border:1px solid #2b3a5f;border-radius:10px;margin-bottom:15px;background:#121a2b;}
-.section-header {padding:12px;background:#18233a;font-weight:bold;}
-.item {padding:10px;border-top:1px solid #2b3a5f;}
-.toggle {margin-top:6px;background:#213b65;color:white;border:none;padding:6px;border-radius:6px;}
-.own {display:none;margin-top:8px;padding:8px;background:#0b1324;border-radius:6px;}
-textarea {width:100%;margin-top:5px;border-radius:6px;}
-.upload {margin-top:6px;padding:6px;background:#6ea8fe;border:none;border-radius:6px;}
-.file {font-size:12px;}
-.timeline {background:#091226;padding:10px;border-radius:10px;margin-bottom:20px;}
-</style>
+    .section{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      margin-bottom:16px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .section-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 18px;
+      background:linear-gradient(135deg,#15213a,#1a2744);
+      cursor:pointer;
+      border-bottom:1px solid var(--line);
+    }
+    .section-header:hover{
+      background:linear-gradient(135deg,#182744,#1e2d4d);
+    }
+    .section-title{
+      margin:0;
+      font-size:18px;
+      line-height:1.3;
+    }
+    .section-meta{
+      color:var(--muted);
+      font-size:13px;
+    }
+    .section-body{
+      padding:10px 12px 14px;
+    }
+
+    .item{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:12px;
+      align-items:start;
+      padding:12px;
+      margin:10px 6px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#0f1729;
+    }
+    .item.hidden{
+      display:none;
+    }
+    .item:hover{
+      border-color:#44639d;
+      background:#111b31;
+    }
+    .item input[type="checkbox"]{
+      width:18px;
+      height:18px;
+      margin-top:3px;
+      accent-color:var(--good);
+      cursor:pointer;
+    }
+    .item-main{
+      min-width:0;
+    }
+    .item-top{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      margin-bottom:7px;
+    }
+    .pill{
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:#0a1222;
+    }
+    .stars{ color:var(--warn); font-weight:700; }
+    .proof{ color:var(--accent2); }
+    .text{
+      line-height:1.55;
+      color:var(--text);
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    .empty{
+      display:none;
+      text-align:center;
+      color:var(--muted);
+      padding:30px 10px;
+      border:1px dashed var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.02);
+    }
+    .footer-note{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      text-align:center;
+    }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .match{
+      background:rgba(255,209,102,.15);
+      color:#ffe7a8;
+      padding:0 2px;
+      border-radius:4px;
+    }
+
+    .expand-line{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:12px;
+      padding-top:10px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .caret-btn{
+      border:none;
+      background:transparent;
+      color:var(--accent2);
+      cursor:pointer;
+      font-size:16px;
+      line-height:1;
+      padding:2px 4px;
+      border-radius:6px;
+      transition:.12s ease;
+    }
+    .caret-btn:hover{
+      background:rgba(255,255,255,.06);
+    }
+    .ownwords-label{
+      cursor:pointer;
+      user-select:none;
+    }
+    .ownwords-content{
+      display:none;
+      margin-top:10px;
+      background:#0b1324;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:14px;
+    }
+    .ownwords-content.open{
+      display:block;
+    }
+    .ownwords-content p{
+      margin:0 0 12px;
+      line-height:1.72;
+      color:var(--text);
+      white-space:pre-wrap;
+    }
+    .ownwords-content p:last-child{
+      margin-bottom:0;
+    }
+    .ownwords-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--accent2);
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    .item-files{
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid var(--line);
+    }
+    .upload-btn{
+      padding:6px 10px;
+      background:var(--accent);
+      color:#000;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:600;
+      margin-top:8px;
+    }
+    .upload-btn:hover{
+      opacity:0.9;
+    }
+    .file-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      padding:6px 8px;
+      margin:4px 0;
+      background:rgba(110,168,254,.1);
+      border-radius:6px;
+      font-size:12px;
+    }
+    .file-item a{
+      color:var(--accent2);
+      text-decoration:none;
+      flex:1;
+      min-width:0;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .file-item a:hover{
+      text-decoration:underline;
+    }
+    .delete-file-btn{
+      background:var(--danger);
+      color:white;
+      border:none;
+      border-radius:4px;
+      padding:2px 6px;
+      cursor:pointer;
+      font-size:11px;
+    }
+    .delete-file-btn:hover{
+      opacity:0.8;
+    }
+    .file-input{
+      display:none;
+    }
+
+    @media (max-width:1300px){
+      .toolbar{
+        grid-template-columns:1fr 1fr 1fr 1fr;
+      }
+    }
+    @media (max-width:900px){
+      .toolbar{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+    @media (max-width:700px){
+      .section-header{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
+<div class="wrap">
+  <div class="top">
+    <h1>Final Merged Master Checklist — Timeline Order</h1>
+    <div class="subtitle">
+      Hand-use review sheet for lawyer review, investigator review, counseling sessions, and keeping issues from being blurred. This page is a checklist organizer, not a final fact finding. Every item has a simple little caret so you can expand <strong>“in my own words”</strong> and slow down what the issue really means to you.
+    </div>
+    <div class="legend">
+      <span class="tag">★★★★★ strongest/currently best-supported</span>
+      <span class="tag">★★★★☆ strong review item</span>
+      <span class="tag">★★★☆☆ important but needs more pinning</span>
+      <span class="tag">★★☆☆☆ flagged / source pin needed</span>
+      <span class="tag">★☆☆☆☆ hold only</span>
+      <span class="tag">[DOC] record/document</span>
+      <span class="tag">[VID] video/audio/transcript</span>
+      <span class="tag">[MIXED] both</span>
+      <span class="tag">[USER] my account / needs source pin</span>
+      <span class="tag">[OFFICIAL] complaint / records route</span>
+    </div>
+  </div>
 
-<h1>Bank 1 Case File</h1>
-<input id="search" placeholder="Search all events, notes, evidence...">
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search by issue, person, phrase, proof tag, statute, section..." />
+    <button id="expandAll">Expand sections</button>
+    <button id="collapseAll">Collapse sections</button>
+    <button id="openAllNotes">Open all notes</button>
+    <button id="closeAllNotes">Close all notes</button>
+    <label class="btn"><input id="showCheckedOnly" type="checkbox" /> Show checked only</label>
+    <button id="checkVisible">Check visible</button>
+    <button id="clearVisible">Uncheck visible</button>
+    <button id="copyVisible">Copy visible</button>
+    <button id="copyVisibleWithNotes">Copy visible + notes</button>
+  </div>
 
-<div class="timeline">
-<b>Key Timeline Events</b><br><br>
-2:12–2:15 — Officer confirms ER location and movement<br>
-2:17 — Requests discharge paperwork<br>
-2:21–2:23 — Confirms active bleeding<br>
+  <div class="stats">
+    <div class="stat"><div class="n" id="statTotal">0</div><div class="l">Total items</div></div>
+    <div class="stat"><div class="n" id="statVisible">0</div><div class="l">Visible items</div></div>
+    <div class="stat"><div class="n" id="statChecked">0</div><div class="l">Checked items</div></div>
+    <div class="stat"><div class="n" id="statSections">0</div><div class="l">Sections</div></div>
+  </div>
+
+  <div id="empty" class="empty">No checklist items match your search.</div>
+  <div id="app"></div>
+
+  <div class="footer-note">
+    Single-file HTML. Checkboxes, uploaded files, and note open/close states save locally in your browser.
+  </div>
 </div>
 
-<div id="app"></div>
+<script id="checklistData" type="text/plain">
+==================================================
+1. PRE-12/09 BACKGROUND — DIRECTIONS FOR LIVING / MEDICATION / DESTABILIZATION
+==================================================
 
-<script>
+[ ] ★★★★★ [DOC/MIXED] Directions for Living / related providers allegedly pulled me off Zoloft right before 12/20 without proper taper, warning, stabilization plan, or explanation of likely effects.
+[ ] ★★★★★ [DOC/MIXED] Review whether abrupt medication cutoff chemically destabilized me and directly fed later confusion, impulsivity, aggression-like symptoms, and criminalization.
+[ ] ★★★★☆ [DOC/MIXED] Review whether they told me depression was masking ADHD but then failed to properly address ADHD and left Zoloft as the main/only option.
+[ ] ★★★★☆ [DOC/MIXED] Review whether I was left destabilized by medication handling and then blamed for symptoms that should have been treated as medication-related / mental-health emergency issues.
+[ ] ★★★★☆ [DOC/MIXED] Review whether statements I made in crisis — including the seatbelt-on-my-neck comment — were signs of mental destabilization / medication fallout and later twisted into dangerousness / self-harm / Baker Act narrative.
+[ ] ★★★☆☆ [USER] Manuela — review all alleged illegal / improper sessions, boundary issues, coercive conduct, or conduct outside normal therapeutic rules.
+[ ] ★★★☆☆ [USER] Manuela / CPS issue — review claim she reported baby mom to CPS without proper approval and/or through a manager; pull dates, session notes, internal approvals, and any CPS contact trail.
+[ ] ★★★☆☆ [USER] Review whether Directions for Living failed to warn me what to expect, failed to protect me when I was spiraling, and failed to act on how bad the medication-change effects were.
+[ ] ★★★☆☆ [USER] Shelly Perry — pre-appeal / appeal interference angle to be tracked separately later, but keep here as part of systemwide failure to protect review issues.
+[ ] ★★★☆☆ [USER] Sarr / Sorrento / blocked interview issue — review whether staff later blocked reporting or follow-up tied back to the same chain of mishandling.
 
-const data = [
+==================================================
+2. 12/09/2024 SAFE HARBOR / NARCAN / "OVERDOSE" LABEL
+==================================================
 
-{
-title:"Hospital / Immediate Arrest",
-items:[
-{
-text:"Officer confirms he is in ER and bringing me forward",
-own:"I was still in the hospital environment receiving care when the officer took control of the situation. I had not completed treatment or been properly discharged.",
-},
-{
-text:"Officer requests discharge paperwork",
-own:"They were already trying to move me through the system before I had actually been medically cleared.",
-},
-{
-text:"Officer states I am bleeding",
-own:"There is clear acknowledgment from the officer that I was actively bleeding. This confirms a medical issue was happening in real time.",
-}
-]
-},
+[ ] ★★★★★ [DOC/MIXED] Safe Harbor incident around 12/09/2024 — review whether I was restrained, given Narcan, and turned into an "overdose" record later used against me.
+[ ] ★★★★★ [DOC/MIXED] Review whether the Safe Harbor / Largo "overdose" record became a weaponized label: unstable, drug-related, already known, already in the system.
+[ ] ★★★★☆ [DOC/MIXED] Review whether Safe Harbor mishandled the event medically and then kicked me out / failed to properly follow through while still leaving me tagged as a drug case.
+[ ] ★★★★☆ [USER/MIXED] Review whether the Safe Harbor / Narcan history was later used against me in jail classification, housing, credibility, and pod placement.
+[ ] ★★★★☆ [USER] Pod 6 issue — review whether old overdose / drug labeling continues to be used to keep me in more restrictive housing or treat me like a drug/mental case even after I said I had been clean.
+[ ] ★★★★☆ [MIXED] Review whether later "crazy / non-coop / drug / Baker Act" language was built on top of old Safe Harbor paperwork instead of actual fresh facts.
 
-{
-title:"Medical Condition / Neglect",
-items:[
-{
-text:"IV came out / bleeding issue",
-own:"My IV had come out or was removed and I was bleeding. This required attention and should have paused everything else.",
-},
-{
-text:"No proper stabilization before custody",
-own:"I was not stabilized medically before being taken into custody, which could have worsened my condition.",
-}
-]
-},
+==================================================
+3. PRE-12/20 LEAD-IN — MENTAL-HEALTH / SYSTEM LABELING / CAUSATION
+==================================================
 
-{
-title:"Officer Conduct",
-items:[
-{
-text:"Continued arrest despite visible medical issue",
-own:"Even after recognizing the situation, the officer continued with arrest procedures instead of addressing the medical issue.",
-},
-{
-text:"Ignored urgency of bleeding",
-own:"The officer acknowledged the bleeding but did not prioritize stopping it or getting proper treatment.",
-}
-]
-},
+[ ] ★★★★☆ [MIXED] Review whether Directions for Living is a major upstream-causation bucket in this case: medication cutoff -> destabilization -> Safe Harbor / Narcan / overdose label -> EMS / hospital / police / jail narrative.
+[ ] ★★★★☆ [USER/MIXED] Review whether PREA / mental-health / drug language was later misused to cover abuse instead of protect me.
 
-{
-title:"Custody / Processing",
-items:[
-{
-text:"Transition from medical to custody without clearance",
-own:"I was moved from a medical situation directly into custody without proper clearance or documentation.",
-},
-{
-text:"Focus on custody over care",
-own:"The actions taken show that custody was prioritized over my immediate health and safety.",
-}
-]
-}
+==================================================
+4. 12/20/2024 EMS CONTACT / CHEMICAL RESTRAINT / RIGHT TO REFUSE
+==================================================
 
-];
+[ ] ★★★★★ [DOC] EMS records show three 5 mg Midazolam / Versed doses on 12/20; review exact times, who ordered them, why they were ordered, and whether the stated justification was truthful.
+[ ] ★★★★★ [DOC/USER] Route-of-administration dispute — records say intranasal; I say it was injected into my shoulder. Review as possible false-medication record, medical battery, false charting, or concealment.
+[ ] ★★★★★ [DOC/MIXED] Review whether EMS chemically restrained me based on a false or exaggerated aggression narrative ("swinging on staff," etc.) instead of real justified medical need.
+[ ] ★★★★★ [DOC/MIXED] Review whether I remained effectively in custody during EMS sedation and treatment — handcuffed, strapped down, unable to meaningfully refuse.
+[ ] ★★★★★ [DOC/MIXED] Review whether I had the right to refuse being drugged under the actual circumstances and whether that right was overridden without lawful emergency justification.
+[ ] ★★★★★ [DOC/USER] I said no / stop and had a fear of needles — review whether sedation still went forward anyway and whether that supports medical battery / non-consensual drugging.
+[ ] ★★★★★ [DOC/MIXED] Review whether sedation was used to make later paperwork, transport, and booking easier while cutting off my ability to protect myself or explain what happened.
+[ ] ★★★★☆ [DOC] Dispatch / EMS complaint labeling included overdose / poisoning framing — review whether that helped create a false drug narrative.
+[ ] ★★★★☆ [USER/MIXED] Review whether EMS is not just a side issue but a central bucket: sedation, false charting, drug labeling, medical handoff, loss of ability to defend myself.
 
-const state = JSON.parse(localStorage.getItem("bank1")||"{}");
+==================================================
+5. 12/20/2024 EMS <-> HOSPITAL <-> POLICE HANDOFF / CONTAINMENT / SECURITY
+==================================================
 
-function save(){localStorage.setItem("bank1",JSON.stringify(state));}
+[ ] ★★★★★ [DOC/MIXED] Review whether the police-to-EMS or EMS-to-police handoff was mishandled from the start, including whether an officer should have remained with EMS so staff could not act without accountability.
+[ ] ★★★★★ [DOC/MIXED] Review whether hospital staff and EMS misinformed each other or stayed confused about why I was there — overdose, Baker Act, aggression, security issue, or criminal issue.
+[ ] ★★★★★ [DOC/MIXED] Review whether the hospital containment itself was improper: how I was kept, redirected, watched, or moved inside the hospital.
+[ ] ★★★★★ [DOC/MIXED] Nurse direction / steering issue — review whether staff pointed me back toward the room / toward Clay, setting up the later contact.
+[ ] ★★★★★ [DOC/MIXED] Review whether hospital staff effectively pointed me to Clay or steered me into the exact position where the "slap" / contact story was then created.
+[ ] ★★★★★ [DOC/MIXED] Review whether Clay, acting in a security/security-type role, used that position to control the scene, shape the narrative, and benefit from control over evidence/report handling.
+[ ] ★★★★★ [DOC/MIXED] Review whether it is a conflict that Clay appears in the security / handling role and also in the later evidence / tape / report chain.
+[ ] ★★★★★ [DOC/MIXED] Review whether the hospital supported or ratified these actions instead of intervening, preserving evidence, or correcting the record.
+[ ] ★★★★★ [DOC/MIXED] Review whether the hospital had a duty to protect a sedated / impaired patient from staged criminalization, unnecessary force, or coordinated security-police escalation and failed that duty.
+[ ] ★★★★★ [DOC/MIXED] Review the Carlotta Cheeseman handoff issue — what document or information was handed to Clay, when it happened, and whether that helped build the later narrative.
+[ ] ★★★★★ [DOC/MIXED] Review whether Cheeseman's role, EMS documentation, and named-paramedic records conflict in a way that suggests false charting, cover-up, or post-hoc cleanup.
+[ ] ★★★★☆ [USER/MIXED] Review whether staff were "playing dumb" about where I came from, why I was there, and what the actual problem was.
+[ ] ★★★★☆ [USER/MIXED] Review whether the hospital knew or should have known the real problem was medication-related destabilization / mental-health crisis, not a violent criminal event.
 
-function render(){
-const app=document.getElementById("app");
-app.innerHTML="";
-const q=document.getElementById("search").value.toLowerCase();
+==================================================
+6. 12/20/2024 SEMINOLE COP / EARLY LAW-ENFORCEMENT ROLE
+==================================================
 
-data.forEach((sec,s)=>{
-const div=document.createElement("div");
-div.className="section";
+[ ] ★★★★☆ [USER/MIXED] Identify the Seminole cop and map his full role from first contact through hospital / transport / narrative build.
+[ ] ★★★★☆ [USER] Review whether the Seminole cop was almost erased from the lineup/story even though he was materially involved.
+[ ] ★★★★☆ [USER] Review whether the Seminole cop helped start or reinforce the violence / Baker Act / drug / non-coop narrative.
+[ ] ★★★☆☆ [USER] Review whether the Seminole cop's statements, body-cam, report, or contact history are missing, minimized, or not properly in the packet.
 
-const head=document.createElement("div");
-head.className="section-header";
-head.textContent=sec.title;
+==================================================
+7. 12/20/2024 STAGED "HIT" / BATTERY-ON-OFFICER BUILD
+==================================================
 
-const body=document.createElement("div");
+[ ] ★★★★★ [DOC/MIXED] Review staged "slap" / battery issue — whether Clay pushed or off-balanced my hands, then converted movement into "he slapped me."
+[ ] ★★★★★ [DOC/MIXED] Review whether the video / physical setup / sedation status undercut any willful battery theory.
+[ ] ★★★★★ [DOC/MIXED] Review whether witness-build / affidavit-build / statement-shaping were used to harden a false battery-on-officer narrative.
+[ ] ★★★★★ [VID/MIXED] Review repeated accusatory questioning — "why did you hit me" / "you hit me in the face" — as harassment, scripting, or narrative forcing.
+[ ] ★★★★☆ [USER/MIXED] Review "hit" / staged-assault issue broadly — whether I was maneuvered, pushed, or set up so contact could later be called battery on an officer.
+[ ] ★★★★☆ [USER] Review whether my hands/body were physically guided or forced in a way that created the "hit" narrative while I was impaired or sedated.
+[ ] ★★★☆☆ [USER] Dianne handoff — review who Dianne is, why there was a handoff to her, and whether there was improper personal or preexisting connection.
+[ ] ★★★☆☆ [USER] Personal hug / familiarity issue — review whether a hug or personal-contact behavior shows unusual familiarity, coordination, bias, or a non-neutral relationship.
 
-sec.items.forEach((item,i)=>{
+==================================================
+8. 12/20/2024 BAKER ACT / HOSPITAL RELEASE / FALSE MENTAL-HEALTH NARRATIVE
+==================================================
 
-const key=s+"-"+i;
-const full=(item.text+" "+item.own).toLowerCase();
-if(q && !full.includes(q)) return;
+[ ] ★★★★★ [DOC/MIXED] Review whether I was told or treated as if I was under a Baker Act while paperwork / discharge / routing do not cleanly support a true Baker Act process.
+[ ] ★★★★★ [DOC/MIXED] Review contradiction where another officer asks if I was there for a Baker Act and Clay says not that he knows of.
+[ ] ★★★★★ [DOC/MIXED] Review whether Baker Act language was used loosely, falsely, or opportunistically to justify transport, force, restraint, or jail treatment.
+[ ] ★★★★☆ [DOC/MIXED] Review whether closed Baker Act forms, changed affidavit times, or later paperwork fixes show story-building instead of clean real-time documentation.
+[ ] ★★★★☆ [DOC/MIXED] Review whether release paperwork not showing Baker Act undercuts later Baker Act claims.
 
-const row=document.createElement("div");
-row.className="item";
+==================================================
+9. 12/20/2024 CAD / DISPATCH / REPORT CHANGES / COVER-UP BUILD
+==================================================
 
-const cb=document.createElement("input");
-cb.type="checkbox";
-cb.checked=state[key]?.c||false;
-cb.onchange=()=>{state[key]=state[key]||{};state[key].c=cb.checked;save();};
+[ ] ★★★★★ [DOC] CAD / dispatch started as disturbance and later changed to battery — review exact timing and reason for the shift.
+[ ] ★★★★★ [DOC/MIXED] Review whether the battery-on-officer narrative was built after the fact rather than documented cleanly from the start.
+[ ] ★★★★★ [VID/MIXED] Review witness / statement-shaping lines ("need one person," "give me a statement," "she's going to work on the statement for me").
+[ ] ★★★★★ [VID/MIXED] Review charge/report-writing line ("I'm charging this guy…" / "I can do the whole report myself").
+[ ] ★★★★★ [VID/MIXED] Review nurse witness / affidavit discussion and whether witness selection or affidavit drafting was manipulated.
+[ ] ★★★★★ [VID/MIXED] Review time-correction language ("I meant to put 2325") as possible paperwork repair / cleanup.
+[ ] ★★★★☆ [DOC/MIXED] Review late supplements and whether late-written paperwork hardened a false story.
+[ ] ★★★★☆ [USER/MIXED] In-car video / record-change issue — review where the story seems to shift while I am in custody and unable to defend myself.
 
-const text=document.createElement("div");
-text.textContent=item.text;
+==================================================
+10. 12/20/2024 TRANSPORT / R_CLAY HARASSMENT / MEDICAL INTERFERENCE / FORCE
+==================================================
 
-const toggle=document.createElement("button");
-toggle.className="toggle";
+[ ] ★★★★★ [VID] Bleeding / IV interference cluster.
+[ ] ★★★★★ [VID] Taser threat — "If you kick… I'mma tase you."
+[ ] ★★★★★ [VID] Intimidation / "gorilla mode" warnings and similar threat language.
+[ ] ★★★★★ [VID] Review whether Clay said he would let me out of the car for medical reasons and then did not.
+[ ] ★★★★★ [VID] Review throw-into-car narrative and IV bleeding references as part of force + medical-interference bucket.
+[ ] ★★★★★ [VID] Force admission — "I just fucking threw them against the wall..."
+[ ] ★★★★★ [VID] Restraint-chair ending block — review 4-hour chair statement and humiliation language.
+[ ] ★★★★☆ [VID] Review whether threats, taunts, and repeated verbal pressure were used to provoke reactions on camera.
+[ ] ★★★★☆ [VID/USER] Review whether transport / handoff language included placing a "hit" on me or teeing me up for rougher handling.
 
-const own=document.createElement("div");
-own.className="own";
+==================================================
+11. 12/20/2024 MOVEMENT CONTROL / CHOREOGRAPHY / CAMERA / BELT AREA / SHOCKS
+==================================================
 
-const ta=document.createElement("textarea");
-ta.rows=4;
-ta.value=state[key]?.n||item.own;
-ta.oninput=()=>{state[key]=state[key]||{};state[key].n=ta.value;save();};
+[ ] ★★★★☆ [USER/VID] Review whether my movements were being directed, pulled, forced, or manipulated while officers simultaneously called me aggressive.
+[ ] ★★★★☆ [USER/VID] Review whether video shows me pulling back defensively while officers narrate that I am the aggressor.
+[ ] ★★★★☆ [USER] Review "organized orchestration" / "perfection movements" issue — whether staff movements look coordinated rather than spontaneous.
+[ ] ★★★★★ [DOC/MIXED] Review camera obstruction / body-cam blockage / muted or missing windows as possible concealment of force or sexual misconduct.
+[ ] ★★★★★ [DOC/MIXED] Review all missing, cut, muted, or unexplained footage gaps — including hospital footage and body-cam footage.
+[ ] ★★★★☆ [USER/VID] Review cam-covering moments tied to force, doorway events, belt-area contact, or sexual misconduct.
+[ ] ★★★★☆ [USER] Review how long brief flashes / lights / "torches" were caught on cam and whether those moments align with pain or force reactions.
+[ ] ★★★★☆ [USER/VID] Review whether staff stayed in my belt / waist area too long and kept going back to that area.
+[ ] ★★★★☆ [USER/VID] Review whether repeated belt-area contact suggests improper touching, concealed force, staged search behavior, or tool handling.
+[ ] ★★★★☆ [USER/VID] Review whether shocks / taser / electrical or impact sounds are clearly heard in my voice or on the audio.
+[ ] ★★★★☆ [USER/VID] Review whether the audio captures pain reactions inconsistent with the official narrative.
+[ ] ★★★☆☆ [USER] Review whether force tools were used off-angle / off-camera / during blocked moments.
 
-own.appendChild(ta);
+==================================================
+12. 12/20/2024 JAIL DOOR / CHOKE / SEXUAL MISCONDUCT / STRIP / PREA MISUSE
+==================================================
 
-const open=state[key]?.o||false;
-own.style.display=open?"block":"none";
-toggle.innerHTML=open?"▼ In my own words":"▶ In my own words";
+[ ] ★★★★★ [USER/MIXED] Review real choke / neck-pressure event at the jail door during first intake — separate from seatbelt language.
+[ ] ★★★★★ [USER/MIXED] Review doorway choke-slam / doorframe pressure / neck compression / cough-strip overlap.
+[ ] ★★★★★ [MIXED] Review alleged sexual misconduct during first intake / early jail period, including oral-sex noises / "blow-job" comment / sexualized humiliation.
+[ ] ★★★★★ [MIXED] Review illegal strip-searches / cough-strip issue / forced exposure.
+[ ] ★★★★★ [MIXED] Review whether PREA language was misused to shield abuse instead of protect me.
+[ ] ★★★★★ [USER/MIXED] Review doorway sexual-assault / sexualized abuse claim and whether body-cam obstruction or blocked angles hide key parts.
+[ ] ★★★★★ [USER/MIXED] Review paper-gown attack / being left naked / notes taken while naked / exposure while defenseless.
+[ ] ★★★★☆ [USER/MIXED] Review cup-in-ear sexual act claim / degrading conduct / mocking behavior as part of sexual abuse and humiliation pattern.
+[ ] ★★★★☆ [MIXED] Keep seatbelt language separate: officer narrative / crisis statement is not the same as the alleged actual officer-applied choke at the jail door.
+[ ] ★★★★☆ [USER/MIXED] Review whether cough, breathing, voice changes, or later pain line up with the doorway choke event.
 
-toggle.onclick=()=>{
-const isOpen=own.style.display==="block";
-own.style.display=isOpen?"none":"block";
-toggle.innerHTML=isOpen?"▶ In my own words":"▼ In my own words";
-state[key]=state[key]||{};
-state[key].o=!isOpen;
-save();
-};
+==================================================
+13. FIRST JAIL STAY — CONDITIONS / ISOLATION / HUMILIATION / GOON SQUAD
+==================================================
 
-const fileInput=document.createElement("input");
-fileInput.type="file";
-fileInput.style.display="none";
+[ ] ★★★★★ [DOC/MIXED] Review "non-cooperative" classification and whether it was false, exaggerated, or used to justify isolation and abuse.
+[ ] ★★★★★ [DOC/MIXED] Review isolation / no lawyer / no phone / no meaningful communication for weeks.
+[ ] ★★★★★ [DOC/MIXED] Review lack of shower, toilet paper, bedding, and exposure while naked on cold floor.
+[ ] ★★★★★ [USER/MIXED] Review repeated shocks / taser / pinching / choke / rough handling / goon-squad force.
+[ ] ★★★★★ [USER/MIXED] Review PA mockery, humiliation, sexualized harassment, and mental torture.
+[ ] ★★★★☆ [DOC/MIXED] Review intake/booking while sedated or impaired and whether paperwork was signed / completed when I could not meaningfully protect myself.
+[ ] ★★★★☆ [DOC/MIXED] Review lack of proper bail hearing / processing / procedural rights during the first stay.
+[ ] ★★★★☆ [USER/MIXED] Review whether there was a handoff to rougher staff / "goon squad" after earlier officers framed me as violent.
+[ ] ★★★★☆ [USER] Review whether placing a "hit" on me or verbally teeing me up for later force happened in transport or handoff conversations.
 
-const btn=document.createElement("button");
-btn.className="upload";
-btn.textContent="Upload evidence";
+==================================================
+14. COURT START / FIRST APPEARANCES / KNOWN LIES / MALICIOUS PROSECUTION
+==================================================
 
-const list=document.createElement("div");
+[ ] ★★★★★ [DOC/MIXED] Malicious prosecution review — whether the case was knowingly built and carried forward on false statements, staged contact, false medication/aggression claims, and manipulated narrative.
+[ ] ★★★★★ [DOC/MIXED] False EMS justification — "swinging on staff" used to justify sedation even though I maintain I was already restrained.
+[ ] ★★★★★ [DOC/MIXED] Review whether prior mental-health / Safe Harbor / overdose records were weaponized to make me look unstable and dangerous.
+[ ] ★★★★☆ [DOC/MIXED] False Baker Act / false mental-health narrative carried into prosecution — review whether they knew early the story did not fit the paperwork but kept using it.
+[ ] ★★★★☆ [USER/MIXED] First-day-in-court knowledge issue — review whether the court side already knew or acted like "cops lie" / knew the police story had problems but still moved forward.
+[ ] ★★★★☆ [DOC/MIXED] Review deleted / missing / blocked evidence issues as part of carrying a false case forward.
 
-(state[key]?.f||[]).forEach(f=>{
-const d=document.createElement("div");
-d.className="file";
-d.textContent=f;
-list.appendChild(d);
-});
+==================================================
+15. PRE-TRIAL / PUBLIC DEFENDER / CASE PREP / LEGAL ACCESS
+==================================================
 
-btn.onclick=()=>fileInput.click();
+[ ] ★★★★★ [DOC] Minutes before trial I was handed a trial booklet I had never seen; I asked for 30 minutes to review it and was denied.
+[ ] ★★★★★ [DOC] Review whether I was forced into trial without adequate chance to review my own case materials.
+[ ] ★★★★★ [DOC] Continuances denied — review whether requests for more time were denied even though I needed time to prepare.
+[ ] ★★★★★ [DOC/MIXED] Blocked from effective defense — review whether timing, access, counsel failures, and delayed communications functionally blocked defense preparation.
+[ ] ★★★★☆ [USER/MIXED] Blocked from getting a new public defender — review all requests, objections, transcripts, and court rulings.
+[ ] ★★★★☆ [USER/MIXED] On-record motions ignored — review motions filed, proof they were filed, and whether they were ignored anyway.
+[ ] ★★★★☆ [USER/MIXED] Motions ignored even after filing proof — keep separate and pull docket / clerk stamps / hearing transcript.
+[ ] ★★★★☆ [USER/MIXED] Locked into jury instructions — review whether I was boxed into bad or incomplete instructions without adequate review or input.
+[ ] ★★★★☆ [USER/MIXED] No time to review jury instructions / trial materials — keep separate from the trial-booklet denial if both occurred.
+[ ] ★★★★★ [DOC] All attorney contact blocked — review as a stand-alone due-process / access-to-counsel problem.
+[ ] ★★★★★ [DOC] Legal mail delayed — court document dated Dec 29 not received until about Jan 16.
+[ ] ★★★★★ [DOC/MIXED] Review whether blocked calls, blocked lawyer access, and delayed mail prevented me from preparing for trial, challenging counsel, or preserving issues.
 
-fileInput.onchange=()=>{
-const f=fileInput.files[0];
-if(!f) return;
-state[key]=state[key]||{};
-state[key].f=state[key].f||[];
-state[key].f.push(f.name);
-save();
-const d=document.createElement("div");
-d.className="file";
-d.textContent=f.name;
-list.appendChild(d);
-};
+==================================================
+16. JURY / VOIR DIRE / POSSIBLE STACKING / CONFLICT FLAGS
+==================================================
 
-row.appendChild(cb);
-row.appendChild(text);
-row.appendChild(toggle);
-row.appendChild(own);
-row.appendChild(btn);
-row.appendChild(fileInput);
-row.appendChild(list);
+[ ] ★★★★★ [DOC] Juror Donald Scott Boggs — practicing criminal defense attorney / law-firm partner — was not challenged.
+[ ] ★★★★★ [DOC] Juror Thomas Edward Norton — retired firefighter / all conflict flags yes — was not challenged.
+[ ] ★★★★★ [DOC] Juror David Lee Malone — active EMS worker / all conflict flags yes — was not challenged.
+[ ] ★★★★★ [DOC/MIXED] Voir dire failure — review whether obvious juror conflicts tied to police / EMS / state-aligned perspectives were not challenged when they should have been.
+[ ] ★★★★☆ [USER/MIXED] Stacked jury concern — review whether the jury pool or seated jury was skewed in a way that helped the state narrative and hurt a fair hearing.
+[ ] ★★★★☆ [USER/MIXED] Jury pool statistics issue — review any notes, numbers, or findings I gathered from jail about the pool makeup and whether they support a challenge.
+[ ] ★★★★☆ [USER/MIXED] Locked into jury structure unfairly — review whether jury seating / jury instructions / lack of challenge time combined into a fundamentally unfair setup.
 
-body.appendChild(row);
+==================================================
+17. TRIAL / POST-TRIAL / APPEAL INTERFERENCE
+==================================================
 
-});
+[ ] ★★★★☆ [USER/MIXED] Appeal interference / post-trial review interference — review whether appeal rights, challenge rights, or review rights were discouraged, delayed, or undermined.
+[ ] ★★★★☆ [USER/MIXED] Shelly Perry — review whether appeal efforts were discouraged, delayed, or mishandled.
+[ ] ★★★★☆ [USER/MIXED] Review whether blocked interviews, delayed legal access, and ignored filings harmed post-trial review.
 
-div.appendChild(head);
-div.appendChild(body);
-app.appendChild(div);
+==================================================
+18. SECOND JAIL STAY — RETALIATION / STRIP / MEDICAL NEGLECT / LATER ABUSE
+==================================================
 
-});
-}
+[ ] ★★★★☆ [USER/MIXED] Review repeat strip-search during second stay.
+[ ] ★★★★☆ [USER] Review extra abuse during second stay: pants removed, paper-gown attack, notes taken while naked.
+[ ] ★★★★☆ [USER/MIXED] Review retaliation after IG / conduct-line / PREA-type reporting.
+[ ] ★★★★☆ [USER] Review denial of sick-call and medical care during second stay.
+[ ] ★★★★☆ [USER] Review false-medication / false-drug narrative continuing into later jail treatment.
+[ ] ★★★☆☆ [USER] Review work / gallbladder / tablet / grievance issues as retaliation or neglect rather than normal jail conditions.
 
-document.getElementById("search").addEventListener("input",render);
+==================================================
+19. PARALLEL / SEPARATE VIDEO REVIEW BUCKET — CAR VIDEO / GUNSHOT / BLINKING LIGHTS
+==================================================
 
-render();
+[ ] ★★★☆☆ [USER] Separate car-video review issue — alleged gunshot to stomach, blinking lights, pain reaction, and traces in the car videos.
+[ ] ★★★☆☆ [USER] Review whether the later pain reaction was secondary and whether the actual event is in the car / blinking-lights segment.
+[ ] ★★☆☆☆ [USER] Review whether officers removed, obscured, or shifted attention away from the gunshot event in later narrative building.
 
+==================================================
+20. PUBLIC-PATTERN / MEDIA / WHAT THE CAMERA ALREADY CAUGHT
+==================================================
+
+[ ] ★★★★☆ [USER/VID] Review whether the public-facing pattern is that the camera already caught enough movement, blocking, force language, and contradiction to show orchestration.
+[ ] ★★★★☆ [USER/VID] Review whether this should later be presented not only as private abuse but as a public pattern of narrative-building and abuse under cover of mental-health / drug labels.
+
+==================================================
+21. LEGAL CODES / AUTHORITIES I WAS USING FROM JAIL
+==================================================
+
+[ ] ★★★★★ [DOC] Fla. Stat. § 90.502 — lawyer-client privilege.
+[ ] ★★★★★ [DOC] Fla. Stat. § 90.803 — hearsay exceptions.
+[ ] ★★★★★ [DOC] Fla. Stat. § 92.525 — verification of documents.
+[ ] ★★★★★ [DOC] Fla. Stat. § 119.011(12) — public records.
+[ ] ★★★★★ [DOC] Fla. Stat. § 394.4593 — sexual misconduct acts.
+[ ] ★★★★★ [DOC] Fla. Stat. § 415.111 — vulnerable adult.
+[ ] ★★★★★ [DOC] Fla. Stat. § 776.08 — forcible felony.
+[ ] ★★★★★ [DOC] Fla. Stat. § 838.022 — official misconduct / changing official records.
+[ ] ★★★★★ [DOC] 42 U.S.C. § 1983 — deprivation of rights.
+[ ] ★★★★★ [DOC] 18 U.S.C. § 3006A — adequate representation of defendants.
+[ ] ★★★★☆ [DOC/MIXED] Case-law bucket for review:
+    - Miami v. Saunders
+    - Velazquez v. City of Hialeah
+    - Hunter v. Bryant
+    - Stiles v. Judd
+    - Republic of Ecuador v. Hinchee
+    - U.S. v. Eduardo Ruben Lopez (Versed / Midazolam issues)
+
+==================================================
+22. COMPLAINT / OVERSIGHT / ACCOUNTABILITY ROUTES
+==================================================
+
+[ ] ★★★★★ [OFFICIAL] Hospital / facility complaint route.
+[ ] ★★★★★ [OFFICIAL] Nurse / practitioner complaint route.
+[ ] ★★★★★ [OFFICIAL] EMS-specific complaint route.
+[ ] ★★★★☆ [OFFICIAL] Patient-safety / accreditation complaint route if wider safety issues fit.
+[ ] ★★★★★ [OFFICIAL] Public-records route for police / city / jail evidence.
+
+==================================================
+23. WHAT TO PULL / PRESERVE / DEMAND
+==================================================
+
+[ ] ★★★★★ Pull all Directions for Living medication records, provider notes, session notes, supervisor approvals, and CPS-related records tied to Manuela.
+[ ] ★★★★★ Pull all Safe Harbor records, Largo records from Narcan / overdose incident, and documents showing how that event was labeled.
+[ ] ★★★★★ Pull all EMS reports, dose records, route records, narratives, signatures, crew identities, and any medical-director review.
+[ ] ★★★★★ Pull full hospital records, discharge paperwork, surveillance, deleted-file metadata, nurse notes, security logs, incident reports, and chain-of-custody records.
+[ ] ★★★★★ Pull any document handed from Cheeseman or hospital staff to Clay; chart-access / print logs if they exist.
+[ ] ★★★★★ Pull hospital security policy, patient-escort policy, sedation/refusal policy, behavioral emergency policy, and police-in-hospital policy.
+[ ] ★★★★★ Pull internal review, risk-management review, complaint files, disciplinary notes, retraining notes, and supervisor / manager approval trail.
+[ ] ★★★★★ Pull full body-cam, dash-cam, in-car audio/video, activation buffers, audit logs, mute windows, and raw exports.
+[ ] ★★★★★ Pull CAD / dispatch logs, supplements, affidavit versions, time corrections, witness statements, and change history.
+[ ] ★★★★★ Pull jail intake, sallyport, doorway, booking, hallway, restraint-chair, strip, housing, movement, and segregation footage/logs.
+[ ] ★★★★★ Pull use-of-force reports, restraint logs, medical request logs, PREA logs, IG / conduct-line records, grievance logs, classification records, mail logs, attorney-call logs, and legal-access logs.
+[ ] ★★★★★ Pull complete trial transcript, voir dire transcript, jury-selection notes, jury questionnaires if available, and jury-instruction conference transcript.
+[ ] ★★★★★ Pull docket sheet, all filed motions, clerk stamps, denied motions, continuance requests, and proof motions were filed but ignored.
+[ ] ★★★★★ Pull all public-defender correspondence, substitution/conflict requests, and complaints about counsel.
+[ ] ★★★★☆ Pull anything showing early awareness that the officer story was shaky, contradictory, or false.
+
+==================================================
+24. MASTER THEMES TO KEEP SEPARATE SO THEY DO NOT GET BLURRED
+==================================================
+
+[ ] ★★★★★ Medication / Directions for Living wrongdoing.
+[ ] ★★★★★ Safe Harbor / Narcan / overdose-label wrongdoing.
+[ ] ★★★★★ EMS sedation / route-of-drug / medical battery / false charting.
+[ ] ★★★★★ Hospital containment / staff steering / Cheeseman handoff / Clay security role.
+[ ] ★★★★★ Seminole cop missing role.
+[ ] ★★★★★ Hospital discharge vs Baker Act contradiction.
+[ ] ★★★★★ Staged "hit" / battery-on-officer narrative.
+[ ] ★★★★★ R_CLAY harassment / threats / report shaping / force admissions.
+[ ] ★★★★★ Doorway choke / strip / sexual misconduct / PREA misuse.
+[ ] ★★★★★ First jail stay abuse and conditions.
+[ ] ★★★★★ Malicious prosecution / false case carried forward.
+[ ] ★★★★★ Denial of case review time / continuances / legal access.
+[ ] ★★★★★ Jurors with obvious conflicts not challenged.
+[ ] ★★★★☆ New PD / substitute counsel issue.
+[ ] ★★★★☆ Motions ignored despite filing proof.
+[ ] ★★★★☆ Jury instructions lock-in / unfair charge posture.
+[ ] ★★★★☆ Jury pool statistics / stacked jury concern.
+[ ] ★★★★☆ Appeal interference / post-trial obstruction.
+[ ] ★★★★☆ Second jail stay retaliation / strip / medical neglect.
+[ ] ★★★★☆ Gunshot / car-video / blinking-lights issue.
+[ ] ★★★★☆ Camera obstruction / missing footage / public-pattern evidence.
 </script>
 
-</body>
-</html>
+<script>
+const rawChecklist = (document.getElementById('checklistData')?.textContent || '').trim();
+const app = document.getElementById('app');
+
+const stateKeyChecks = 'mergedChecklistFinalChecks';
+const stateKeyOwn = 'mergedChecklistFinalOwnNotes';
+
+function loadState(key){
+  try { return JSON.parse(localStorage.getItem(key) || '{}'); }
+  catch(e){ return {}; }
+}
+function saveState(key, obj){
+  localStorage.setItem(key, JSON.stringify(obj));
+}
+
+let checks = loadState(stateKeyChecks);
+let ownOpen = loadState(stateKeyOwn);
+const ownWordsCache = {};
+
+function esc(str){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+function highlight(text, q){
+  const safe = esc(text);
+  if (!q) return safe;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'ig');
+  return safe.replace(re, '<span class="match">$1</span>');
+}
+
+function parseChecklist(text){
+  const lines = text.split('\n').map(l => l.trimEnd());
+  const sections = [];
+  let current = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    const line = raw.trim();
+    if (!line) continue;
+
+    if (/^\d+\.\s/.test(line)) {
+      current = { title: line, items: [] };
+      sections.push(current);
+      continue;
+    }
+
+    if (!current) continue;
+
+    if (line.startsWith('[ ]')) {
+      const stars = (line.match(/[★☆]{5}/) || [''])[0];
+      const proofMatch = line.match(/\[(DOC\/USER|DOC\/MIXED|USER\/MIXED|VID\/MIXED|DOC|VID|MIXED|USER|OFFICIAL)\]/);
+      const proof = proofMatch ? proofMatch[1] : '';
+
+      const text = line
+        .replace(/^\[\s\]\s*/, '')
+        .replace(/[★☆]{5}\s*/, '')
+        .replace(/\[(DOC\/USER|DOC\/MIXED|USER\/MIXED|VID\/MIXED|DOC|VID|MIXED|USER|OFFICIAL)\]\s*/, '')
+        .trim();
+
+      current.items.push({
+        id: `item_${sections.length}_${current.items.length}`,
+        stars,
+        proof,
+        text
+      });
+    }
+  }
+  return sections;
+}
+
+const sections = parseChecklist(rawChecklist);
+console.log('Checklist loaded. Sections:', sections.length);
+
+function pushUnique(arr, val){
+  if (val && !arr.includes(val)) arr.push(val);
+}
+
+function getSectionTone(sectionTitle){
+  const s = sectionTitle.toLowerCase();
+
+  if (s.includes('pre-12/09 background')) {
+    return [
+      "This belongs before the arrest story. If I skip this part, everything later gets flattened into “he just acted crazy,” and that helps them, not me.",
+      "This is the part where I was already trying to get help and already getting handled in ways that I think set me up to be easy to misread, easy to label, and easy to punish."
+    ];
+  }
+  if (s.includes('safe harbor')) {
+    return [
+      "I keep this separate because this is where the overdose / unstable label starts really sticking to me.",
+      "To me, this matters because once that label gets attached, people stop slowing down and start acting like every later problem already makes sense."
+    ];
+  }
+  if (s.includes('lead-in')) {
+    return [
+      "This is the lead-in section. I need it here so the story does not start too late.",
+      "If this gets ignored, then 12/20 looks like it came out of nowhere, and I don't think that is honest."
+    ];
+  }
+  if (s.includes('ems contact')) {
+    return [
+      "This is one of the biggest buckets in the whole case for me.",
+      "Once I was restrained and drugged, the whole power balance changed. After that, I was not on even ground with anybody around me."
+    ];
+  }
+  if (s.includes('handoff') || s.includes('containment') || s.includes('security')) {
+    return [
+      "This part matters because I do not think the scene was just naturally unfolding.",
+      "I think people were steering me, pointing me, containing me, and deciding what role I was supposed to be in before the final story even got locked."
+    ];
+  }
+  if (s.includes('seminole cop')) {
+    return [
+      "I keep this officer separate because I don't want the early contact erased just because Clay became the face of the case.",
+      "The beginning matters too. If the beginning gets washed out, the story gets cleaner for them."
+    ];
+  }
+  if (s.includes('staged') || s.includes('battery-on-officer')) {
+    return [
+      "This is the heart of the criminal case.",
+      "If the so-called slap / hit was staged, exaggerated, or built out of movement they helped create, then everything stacked on top of that charge gets shaky fast."
+    ];
+  }
+  if (s.includes('baker act')) {
+    return [
+      "I do not see the Baker Act language in this case as neutral.",
+      "I see it as one of the tools that kept getting used to move me, contain me, explain me, and shut me up."
+    ];
+  }
+  if (s.includes('cad') || s.includes('dispatch') || s.includes('report changes')) {
+    return [
+      "This is one of the paper-trail buckets that keeps bothering me.",
+      "Even if every single discrepancy does not prove a conspiracy by itself, enough timing shifts and wording changes start telling their own story."
+    ];
+  }
+  if (s.includes('transport') || s.includes('r_clay')) {
+    return [
+      "This is where the intimidation and pressure feel more obvious to me.",
+      "Once I was in the car and under total control, I could not protect myself and the tone starts sounding more like harassment than normal police work."
+    ];
+  }
+  if (s.includes('movement control') || s.includes('camera') || s.includes('shocks')) {
+    return [
+      "This section is me slowing the scene down.",
+      "I keep looking at hands, bodies, blocked views, belt area contact, sounds, and timing because small moments are where the bigger lie can hide."
+    ];
+  }
+  if (s.includes('jail door') || s.includes('sexual misconduct') || s.includes('prea')) {
+    return [
+      "This is one of the ugliest buckets in the case and I do not want it softened.",
+      "Forced exposure, choking, sexualized handling, humiliation — those are not side issues to me. They are their own category of harm."
+    ];
+  }
+  if (s.includes('first jail stay')) {
+    return [
+      "This is the first jail stay bucket and I need that kept clean every single time.",
+      "The first stay was worse. That is where the worst abuse, isolation, humiliation, and helplessness live for me."
+    ];
+  }
+  if (s.includes('court start') || s.includes('malicious prosecution')) {
+    return [
+      "This is where a bad story stops being a messy incident and starts becoming a case that keeps moving anyway.",
+      "That matters to me because once they had a usable version, I don't think the system slowed down to ask whether it was true."
+    ];
+  }
+  if (s.includes('pre-trial') || s.includes('public defender') || s.includes('legal access')) {
+    return [
+      "This is one of the biggest fairness buckets.",
+      "I do not think I got a real shot. Not enough time. Not enough access. Not enough room to review. Not enough actual defense."
+    ];
+  }
+  if (s.includes('jury') || s.includes('voir dire')) {
+    return [
+      "I care about this because the people deciding my case were not just random blank faces to me.",
+      "Some of them had backgrounds and conflicts that should have been explored harder, and I don't think that was done."
+    ];
+  }
+  if (s.includes('appeal')) {
+    return [
+      "This matters because even after conviction I still should have had a real path to push back.",
+      "If that path got slowed down, discouraged, or clogged up, then that is part of the harm too."
+    ];
+  }
+  if (s.includes('second jail stay')) {
+    return [
+      "This is the second jail stay bucket and I need it kept separate from the first one.",
+      "The second stay was still bad, but in a different way — more work pressure, gallbladder pain, legal-mail issues, and fear of retaliation."
+    ];
+  }
+  if (s.includes('car video') || s.includes('blinking lights')) {
+    return [
+      "This is one of the stranger memory / evidence buckets, but I keep it because I do not want to erase my own experience just because it is harder to explain fast.",
+      "Some of this still needs cleaner pinning. That is why I leave it in review instead of pretending it doesn't matter."
+    ];
+  }
+  if (s.includes('public-pattern') || s.includes('camera already caught')) {
+    return [
+      "This section is me stepping back and asking whether the camera already caught enough to show a pattern, even if it did not catch every single thing cleanly.",
+      "I care about the overall feel of the footage, the blocked views, the timing, and how the story seems to tighten around me while my side gets smaller."
+    ];
+  }
+  if (s.includes('legal codes') || s.includes('authorities')) {
+    return [
+      "I was trying to teach myself enough law from inside so I would not get completely steamrolled.",
+      "I was not doing this to play lawyer. I was doing it because I needed some language for what felt wrong."
+    ];
+  }
+  if (s.includes('complaint') || s.includes('oversight') || s.includes('accountability')) {
+    return [
+      "These are the outside doors I was trying to find because the inside doors kept closing on me.",
+      "If the normal channels were part of the problem, then outside complaint routes are not extra — they are necessary."
+    ];
+  }
+  if (s.includes('pull') || s.includes('preserve') || s.includes('demand')) {
+    return [
+      "This section is practical, but it is emotional too.",
+      "Every record I fail to pull is one more place their version gets to stay cleaner than mine."
+    ];
+  }
+  if (s.includes('master themes')) {
+    return [
+      "This is my anti-blur section.",
+      "If I let all of this get mashed together, I sound inconsistent. When the buckets stay separate, the story makes more sense."
+    ];
+  }
+
+  return [
+    "This is one of the places where the case can get flattened if I am not careful.",
+    "I keep it here because even a small point can matter when the bigger story is already working against me."
+  ];
+}
+
+function buildOwnWords(sectionTitle, itemText){
+  const key = sectionTitle + '||' + itemText;
+  if (ownWordsCache[key]) return ownWordsCache[key];
+
+  const lower = itemText.toLowerCase();
+  const paras = [];
+  const tone = getSectionTone(sectionTitle);
+
+  paras.push(tone[0]);
+  paras.push(tone[1]);
+
+  if (/zoloft|sertraline/.test(lower)) {
+    pushUnique(paras, "I keep bringing up Zoloft because I do not think it is just background noise. If that medication was started, stopped, or handled wrong, then what happened to me afterward cannot honestly be read like it came out of nowhere.");
+  }
+
+  if (/directions for living|manuela|adhd|depression|medication/.test(lower)) {
+    pushUnique(paras, "To me this is part of the failure-to-help bucket. I was in contact with people who were supposed to stabilize things, and instead I felt more exposed, more mislabeled, and easier to write off.");
+  }
+
+  if (/safe harbor|narcan|overdose/.test(lower)) {
+    pushUnique(paras, "I think this part gave them a ready-made label for me. Once “overdose,” “drug,” or “unstable” starts attaching to your name, people stop asking harder questions and start acting like the rest explains itself.");
+  }
+
+  if (/ems|midazolam|versed|chemical restraint|drugged|sedat/.test(lower)) {
+    pushUnique(paras, "This is one of the reasons I am still pushing so hard. I do not believe they should have been able to restrain and sedate me the way they did, then turn around and act like everything after that was still voluntary, clear, and reliable.");
+    pushUnique(paras, "When I say this matters, I mean it changes intent, memory, body control, fear, and the whole power balance. After that point I was not operating like a free and normal person.");
+  }
+
+  if (/right to refuse|consent|needle/.test(lower)) {
+    pushUnique(paras, "I said no. That matters to me in a really basic human way. I was not volunteering to be drugged. So when this gets written up like a routine medical step, it strips the violence out of what it actually felt like.");
+  }
+
+  if (/hospital|containment|security|cheeseman|carlotta|handoff/.test(lower)) {
+    pushUnique(paras, "The hospital piece matters because that is where the medical world, the security world, and the police world blur together in a way that still feels wrong to me.");
+  }
+
+  if (/seminole cop/.test(lower)) {
+    pushUnique(paras, "I keep this officer in the checklist because I do not want the earlier contact erased just because the final charge got attached to Clay.");
+  }
+
+  if (/slap|battery|hit|off-balanced|off balance/.test(lower)) {
+    pushUnique(paras, "This point matters because the whole criminal case is hanging off of this contact. If the movement was created, exaggerated, misread, or staged, then everything built on top of it needs to be questioned.");
+    pushUnique(paras, "Emotionally, this is the part that makes me feel the most railroaded, because one moment gets simplified and then used to swallow the whole rest of the story.");
+  }
+
+  if (/baker act/.test(lower)) {
+    pushUnique(paras, "I do not think Baker Act language was just neutral paperwork here. I think it kept being used as a way to move me, explain me, contain me, and make people less likely to listen.");
+  }
+
+  if (/cad|dispatch|report|supplement|affidavit|statement|witness/.test(lower)) {
+    pushUnique(paras, "This is one of the paper-trail issues that keeps eating at me. I know paperwork can outlive memory, and that is exactly why wording and timing matter so much.");
+  }
+
+  if (/threat|kick your ass|gorilla mode|tase|restraint chair|threw.*wall|throw/.test(lower)) {
+    pushUnique(paras, "This is not just rude cop talk to me. This is part of the intimidation bucket. It matters because it shows what kind of energy I was actually dealing with while under their control.");
+  }
+
+  if (/camera|body-cam|dash-cam|muted|blocked|missing footage|lights|blink|audio/.test(lower)) {
+    pushUnique(paras, "I keep these camera issues here because when I could not defend myself in real time, the footage became the next best witness. So every blocked angle, mute gap, and missing chunk matters.");
+  }
+
+  if (/sexual|strip|prea|cough-strip|naked|exposure|doorway|choke|choking|cup-in-ear/.test(lower)) {
+    pushUnique(paras, "This part is hard because it is ugly and easy for other people to want to skip over. I do not want it skipped. This is its own harm, not just a side complaint.");
+  }
+
+  if (/first jail stay|non-cooperative|non-coop|goon squad|isolation|no lawyer|no phone|no shower|toilet paper/.test(lower)) {
+    pushUnique(paras, "This belongs to the first jail stay and I need that understood every time. The first stay was where I felt the most buried, the most cut off, and the least protected.");
+  }
+
+  if (/malicious prosecution|false case|carried forward|known lies/.test(lower)) {
+    pushUnique(paras, "This matters because at some point it stops being about a messy incident and starts becoming about who kept a bad story moving anyway.");
+  }
+
+  if (/trial booklet|continuance|legal access|lawyer|public defender|shelly perry|motions ignored|jury instructions/.test(lower)) {
+    pushUnique(paras, "This is one of the biggest fairness buckets. I do not think I was given a real shot. Not enough time, not enough access, and not enough actual defense.");
+  }
+
+  if (/juror|voir dire|boggs|flowers|norton|malone|stacked jury|jury pool/.test(lower)) {
+    pushUnique(paras, "I care about this because the people deciding my fate were not just random blanks to me. Some had backgrounds that should have mattered more than they did.");
+  }
+
+  if (/appeal|post-trial/.test(lower)) {
+    pushUnique(paras, "This matters because even after conviction I still should have had a real path to push back. If that path was slowed down or clogged up, that becomes part of the story too.");
+  }
+
+  if (/second jail stay|work|gallbladder|dehydration|headphones|pod|mail/.test(lower)) {
+    pushUnique(paras, "This belongs to the second jail stay, not the first. I keep saying that because the second stay was more about pressure, pain, legal access, and retaliation fear than the original blackout type harm.");
+  }
+
+  if (/gunshot|stomach|blinking lights|car-video/.test(lower)) {
+    pushUnique(paras, "This is one of the harder memory buckets, but I keep it because I do not want to erase my own experience just because it is harder to prove quickly.");
+  }
+
+  if (/code|statute|case-law|u\.s\.c|fla\. stat|authority/.test(lower)) {
+    pushUnique(paras, "I was trying to give the chaos some legal shape. I was not doing this to sound smart. I was doing it because I needed some language for what felt wrong.");
+  }
+
+  if (/complaint|oversight|accountability|public-records|records route/.test(lower)) {
+    pushUnique(paras, "This matters because I kept getting nowhere inside the system. So the complaint and oversight routes became part of survival, not just paperwork.");
+  }
+
+  if (/pull|preserve|demand|raw footage|metadata|docket|transcript/.test(lower)) {
+    pushUnique(paras, "This is me trying to stop things from disappearing. The case only gets cleaner for them if the documents, logs, and raw footage stay scattered or vanish.");
+  }
+
+  if (/separate|blur|themes/.test(lower)) {
+    pushUnique(paras, "Blurring is one of the main ways this whole thing gets used against me. Once it all gets mashed together, I sound inconsistent. When it stays separated, it makes more sense.");
+  }
+
+  if (paras.length <= 2) {
+    pushUnique(paras, "Even if this looks like a small detail, I know from how this case has gone that small details are exactly where the bigger distortions hide.");
+  }
+
+  ownWordsCache[key] = paras;
+  return paras;
+}
+
+function displayFilesForItem(itemId) {
+  const container = document.querySelector(`[data-files="${itemId}"]`);
+  if (!container) return;
+
+  const files = JSON.parse(localStorage.getItem(`files_${itemId}`) || '[]');
+  container.innerHTML = '';
+
+  files.forEach((file, idx) => {
+    const fileDiv = document.createElement('div');
+    fileDiv.className = 'file-item';
+    fileDiv.innerHTML = `
+      <a href="${file.data}" download="${file.name}">📎 ${file.name} (${(file.size/1024).toFixed(1)}KB)</a>
+      <button class="delete-file-btn" data-delete-file="${itemId}" data-file-index="${idx}">Delete</button>
+    `;
+    container.appendChild(fileDiv);
+  });
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const checkedOnly = document.getElementById('showCheckedOnly').checked;
+  app.innerHTML = '';
+
+  let total = 0, visible = 0, checked = 0, visibleSections = 0;
+
+  sections.forEach(section => {
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.dataset.open = 'true';
+
+    const head = document.createElement('div');
+    head.className = 'section-header';
+
+    const left = document.createElement('div');
+    left.innerHTML = `
+      <h2 class="section-title">${esc(section.title)}</h2>
+      <div class="section-meta">${section.items.length} item(s)</div>
+    `;
+
+    const right = document.createElement('div');
+    right.className = 'small';
+    right.textContent = 'Click to collapse';
+
+    head.appendChild(left);
+    head.appendChild(right);
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    let secVisible = 0;
+
+    section.items.forEach(item => {
+      total++;
+      const isChecked = !!checks[item.id];
+      if (isChecked) checked++;
+
+      const ownText = buildOwnWords(section.title, item.text).join(' ').toLowerCase();
+      const blob = `${section.title} ${item.stars} ${item.proof} ${item.text} ${ownText}`.toLowerCase();
+      const matches = !q || blob.includes(q);
+      const show = matches && (!checkedOnly || isChecked);
+
+      if (show) {
+        secVisible++;
+        visible++;
+      }
+
+      const row = document.createElement('div');
+      row.className = 'item' + (show ? '' : ' hidden');
+      row.dataset.id = item.id;
+      row.dataset.visible = show ? '1' : '0';
+
+      const isOpen = !!ownOpen[item.id];
+
+      row.innerHTML = `
+        <input type="checkbox" ${isChecked ? 'checked' : ''} />
+        <div class="item-main">
+          <div class="item-top">
+            ${item.stars ? `<span class="pill stars">${esc(item.stars)}</span>` : ''}
+            ${item.proof ? `<span class="pill proof">[${esc(item.proof)}]</span>` : ''}
+          </div>
+
+          <div class="text">${highlight(item.text, q)}</div>
+
+          <div class="expand-line">
+            <button class="caret-btn" data-toggle-own="${item.id}" aria-label="Toggle own words">${isOpen ? '▾' : '▸'}</button>
+            <span class="ownwords-label" data-toggle-own="${item.id}">in my own words</span>
+          </div>
+
+          <div class="ownwords-content ${isOpen ? 'open' : ''}" data-own-content="${item.id}">
+            <div class="ownwords-title">In my own words</div>
+            ${buildOwnWords(section.title, item.text).map(p => `<p>${highlight(p, q)}</p>`).join('')}
+          </div>
+
+          <div class="item-files">
+            <input type="file" id="file-${item.id}" class="file-input" accept=".txt,image/*,.pdf,.doc,.docx" />
+            <button class="upload-btn" data-upload-trigger="${item.id}">📤 Upload file</button>
+            <div data-files="${item.id}"></div>
+          </div>
+        </div>
+      `;
+      body.appendChild(row);
+    });
+
+    if (secVisible > 0) {
+      visibleSections++;
+      head.addEventListener('click', () => {
+        const open = sec.dataset.open === 'true';
+        sec.dataset.open = (!open).toString();
+        const meta = sec.querySelector('.small');
+        if (open) {
+          body.style.display = 'none';
+          meta.textContent = 'Click to expand';
+        } else {
+          body.style.display = '';
+          meta.textContent = 'Click to collapse';
+        }
+      });
+
+      sec.appendChild(head);
+      sec.appendChild(body);
+      app.appendChild(sec);
+    }
+  });
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statVisible').textContent = visible;
+  document.getElementById('statChecked').textContent = checked;
+  document.getElementById('statSections').textContent = visibleSections;
+  document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
+
+  document.querySelectorAll('.item input[type="checkbox"]').forEach(cb => {
+    const row = cb.closest('.item');
+    cb.addEventListener('change', e => {
+      const id = row.dataset.id;
+      if (e.target.checked) checks[id] = true;
+      else delete checks[id];
+      saveState(stateKeyChecks, checks);
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-toggle-own]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = el.getAttribute('data-toggle-own');
+      if (ownOpen[id]) delete ownOpen[id];
+      else ownOpen[id] = true;
+      saveState(stateKeyOwn, ownOpen);
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-upload-trigger]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-upload-trigger');
+      const input = document.getElementById(`file-${id}`);
+      if (input) input.click();
+    });
+  });
+
+  document.querySelectorAll('.file-input').forEach(input => {
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const row = e.target.closest('.item');
+      const itemId = row.dataset.id
