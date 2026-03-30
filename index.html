@@ -46,7 +46,7 @@
     }
     .subtitle{
       color:var(--muted);
-      line-height:1.5;
+      line-height:1.6;
       margin-bottom:14px;
     }
     .legend{
@@ -66,9 +66,10 @@
       border-radius:999px;
       font-size:13px;
     }
+
     .toolbar{
       display:grid;
-      grid-template-columns: 1.4fr repeat(9, auto);
+      grid-template-columns:1.4fr auto auto auto auto auto;
       gap:10px;
       align-items:center;
       background:var(--panel);
@@ -91,7 +92,7 @@
       outline:none;
       font-size:15px;
     }
-    .toolbar button, .toolbar label.btn{
+    .toolbar button, .toolbar .btn{
       border:1px solid var(--line);
       background:var(--panel2);
       color:var(--text);
@@ -104,12 +105,27 @@
       text-align:center;
       user-select:none;
     }
-    .toolbar button:hover, .toolbar label.btn:hover{
+    .toolbar button:hover, .toolbar .btn:hover{
       transform:translateY(-1px);
       border-color:var(--accent);
     }
-    .toolbar input[type="checkbox"]{
-      display:none;
+    .toolbar .check-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--line);
+      background:var(--panel2);
+      border-radius:12px;
+      padding:12px 14px;
+      white-space:nowrap;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .toolbar .check-wrap input{
+      accent-color:var(--good);
+      width:16px;
+      height:16px;
+      cursor:pointer;
     }
 
     .stats{
@@ -146,17 +162,9 @@
       box-shadow:var(--shadow);
     }
     .section-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
       padding:16px 18px;
       background:linear-gradient(135deg,#15213a,#1a2744);
-      cursor:pointer;
       border-bottom:1px solid var(--line);
-    }
-    .section-header:hover{
-      background:linear-gradient(135deg,#182744,#1e2d4d);
     }
     .section-title{
       margin:0;
@@ -166,6 +174,7 @@
     .section-meta{
       color:var(--muted);
       font-size:13px;
+      margin-top:4px;
     }
     .section-body{
       padding:10px 12px 14px;
@@ -214,10 +223,15 @@
       color:var(--muted);
       background:#0a1222;
     }
-    .stars{ color:var(--warn); font-weight:700; }
-    .proof{ color:var(--accent2); }
+    .stars{
+      color:var(--warn);
+      font-weight:700;
+    }
+    .proof{
+      color:var(--accent2);
+    }
     .text{
-      line-height:1.55;
+      line-height:1.6;
       color:var(--text);
       white-space:pre-wrap;
       word-break:break-word;
@@ -238,10 +252,6 @@
       line-height:1.6;
       text-align:center;
     }
-    .small{
-      font-size:12px;
-      color:var(--muted);
-    }
     .match{
       background:rgba(255,209,102,.15);
       color:#ffe7a8;
@@ -249,61 +259,59 @@
       border-radius:4px;
     }
 
-    .expand-line{
-      display:flex;
+    details.story{
+      margin-top:12px;
+      border-top:1px solid var(--line);
+      padding-top:10px;
+    }
+    details.story summary{
+      list-style:none;
+      cursor:pointer;
+      color:var(--accent2);
+      font-size:13px;
+      font-weight:600;
+      user-select:none;
+      outline:none;
+      display:inline-flex;
       align-items:center;
       gap:8px;
-      margin-top:12px;
-      padding-top:10px;
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      font-size:13px;
     }
-    .caret-btn{
-      border:none;
-      background:transparent;
-      color:var(--accent2);
-      cursor:pointer;
-      font-size:16px;
-      line-height:1;
-      padding:2px 4px;
-      border-radius:6px;
-      transition:.12s ease;
-    }
-    .caret-btn:hover{
-      background:rgba(255,255,255,.06);
-    }
-    .ownwords-label{
-      cursor:pointer;
-      user-select:none;
-    }
-    .ownwords-content{
+    details.story summary::-webkit-details-marker{
       display:none;
+    }
+    .story-caret{
+      display:inline-block;
+      width:14px;
+      text-align:center;
+      transition:transform .15s ease;
+      color:var(--accent2);
+    }
+    details.story[open] .story-caret{
+      transform:rotate(90deg);
+    }
+    .story-box{
       margin-top:10px;
       background:#0b1324;
       border:1px solid var(--line);
       border-radius:12px;
       padding:14px;
     }
-    .ownwords-content.open{
-      display:block;
-    }
-    .ownwords-content p{
-      margin:0 0 12px;
-      line-height:1.72;
-      color:var(--text);
-      white-space:pre-wrap;
-    }
-    .ownwords-content p:last-child{
-      margin-bottom:0;
-    }
-    .ownwords-title{
+    .story-title{
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:.08em;
       color:var(--accent2);
       margin-bottom:10px;
       font-weight:700;
+    }
+    .story-box p{
+      margin:0 0 12px;
+      line-height:1.72;
+      color:var(--text);
+      white-space:pre-wrap;
+    }
+    .story-box p:last-child{
+      margin-bottom:0;
     }
 
     .item-files{
@@ -329,12 +337,12 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:8px;
       padding:6px 8px;
       margin:4px 0;
       background:rgba(110,168,254,.1);
       border-radius:6px;
       font-size:12px;
+      gap:8px;
     }
     .file-item a{
       color:var(--accent2);
@@ -364,21 +372,12 @@
       display:none;
     }
 
-    @media (max-width:1300px){
+    @media (max-width:1200px){
       .toolbar{
-        grid-template-columns:1fr 1fr 1fr 1fr;
-      }
-    }
-    @media (max-width:900px){
-      .toolbar{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:1fr 1fr 1fr;
       }
     }
     @media (max-width:700px){
-      .section-header{
-        align-items:flex-start;
-        flex-direction:column;
-      }
       .toolbar{
         grid-template-columns:1fr;
       }
@@ -390,7 +389,7 @@
   <div class="top">
     <h1>Final Merged Master Checklist — Timeline Order</h1>
     <div class="subtitle">
-      Hand-use review sheet for lawyer review, investigator review, counseling sessions, and keeping issues from being blurred. This page is a checklist organizer, not a final fact finding. Every item has a simple little caret so you can expand <strong>“in my own words”</strong> and slow down what the issue really means to you.
+      Hand-use review sheet for lawyer review, investigator review, and counseling sessions. This page keeps the buckets separate so the story does not get blurred together and turned into something cleaner than what I actually lived through.
     </div>
     <div class="legend">
       <span class="tag">★★★★★ strongest/currently best-supported</span>
@@ -408,11 +407,10 @@
 
   <div class="toolbar">
     <input id="search" type="search" placeholder="Search by issue, person, phrase, proof tag, statute, section..." />
-    <button id="expandAll">Expand sections</button>
-    <button id="collapseAll">Collapse sections</button>
-    <button id="openAllNotes">Open all notes</button>
-    <button id="closeAllNotes">Close all notes</button>
-    <label class="btn"><input id="showCheckedOnly" type="checkbox" /> Show checked only</label>
+    <label class="check-wrap">
+      <input id="showCheckedOnly" type="checkbox" />
+      <span>Show checked only</span>
+    </label>
     <button id="checkVisible">Check visible</button>
     <button id="clearVisible">Uncheck visible</button>
     <button id="copyVisible">Copy visible</button>
@@ -430,7 +428,7 @@
   <div id="app"></div>
 
   <div class="footer-note">
-    Single-file HTML. Checkboxes, uploaded files, and note open/close states save locally in your browser.
+    Single-file HTML. Checkboxes and uploads save locally in your browser.
   </div>
 </div>
 
@@ -762,20 +760,15 @@
 const rawChecklist = (document.getElementById('checklistData')?.textContent || '').trim();
 const app = document.getElementById('app');
 
-const stateKeyChecks = 'mergedChecklistFinalChecks';
-const stateKeyOwn = 'mergedChecklistFinalOwnNotes';
-
-function loadState(key){
-  try { return JSON.parse(localStorage.getItem(key) || '{}'); }
+const stateKeyChecks = 'mergedChecklistSimpleChecks';
+function loadChecks(){
+  try { return JSON.parse(localStorage.getItem(stateKeyChecks) || '{}'); }
   catch(e){ return {}; }
 }
-function saveState(key, obj){
-  localStorage.setItem(key, JSON.stringify(obj));
+function saveChecks(obj){
+  localStorage.setItem(stateKeyChecks, JSON.stringify(obj));
 }
-
-let checks = loadState(stateKeyChecks);
-let ownOpen = loadState(stateKeyOwn);
-const ownWordsCache = {};
+let checks = loadChecks();
 
 function esc(str){
   return String(str)
@@ -783,12 +776,14 @@ function esc(str){
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;');
 }
-
 function highlight(text, q){
   const safe = esc(text);
   if (!q) return safe;
   const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'ig');
   return safe.replace(re, '<span class="match">$1</span>');
+}
+function pushUnique(arr, v){
+  if (v && !arr.includes(v)) arr.push(v);
 }
 
 function parseChecklist(text){
@@ -797,8 +792,7 @@ function parseChecklist(text){
   let current = null;
 
   for (let i = 0; i < lines.length; i++) {
-    const raw = lines[i];
-    const line = raw.trim();
+    const line = lines[i].trim();
     if (!line) continue;
 
     if (/^\d+\.\s/.test(line)) {
@@ -810,11 +804,10 @@ function parseChecklist(text){
     if (!current) continue;
 
     if (line.startsWith('[ ]')) {
-      const stars = (line.match(/[★☆]{5}/) || [''])[0];
-      const proofMatch = line.match(/\[(DOC\/USER|DOC\/MIXED|USER\/MIXED|VID\/MIXED|DOC|VID|MIXED|USER|OFFICIAL)\]/);
-      const proof = proofMatch ? proofMatch[1] : '';
-
-      const text = line
+      let stars = (line.match(/[★☆]{5}/) || [''])[0];
+      let proofMatch = line.match(/\[(DOC\/USER|DOC\/MIXED|USER\/MIXED|VID\/MIXED|DOC|VID|MIXED|USER|OFFICIAL)\]/);
+      let proof = proofMatch ? proofMatch[1] : '';
+      let text = line
         .replace(/^\[\s\]\s*/, '')
         .replace(/[★☆]{5}\s*/, '')
         .replace(/\[(DOC\/USER|DOC\/MIXED|USER\/MIXED|VID\/MIXED|DOC|VID|MIXED|USER|OFFICIAL)\]\s*/, '')
@@ -830,13 +823,8 @@ function parseChecklist(text){
   }
   return sections;
 }
-
 const sections = parseChecklist(rawChecklist);
-console.log('Checklist loaded. Sections:', sections.length);
-
-function pushUnique(arr, val){
-  if (val && !arr.includes(val)) arr.push(val);
-}
+console.log('Sections parsed:', sections.length);
 
 function getSectionTone(sectionTitle){
   const s = sectionTitle.toLowerCase();
@@ -844,19 +832,19 @@ function getSectionTone(sectionTitle){
   if (s.includes('pre-12/09 background')) {
     return [
       "This belongs before the arrest story. If I skip this part, everything later gets flattened into “he just acted crazy,” and that helps them, not me.",
-      "This is the part where I was already trying to get help and already getting handled in ways that I think set me up to be easy to misread, easy to label, and easy to punish."
+      "This is where I was already trying to get help and already getting handled in ways that I think made me easier to misread, easier to label, and easier to punish."
     ];
   }
   if (s.includes('safe harbor')) {
     return [
-      "I keep this separate because this is where the overdose / unstable label starts really sticking to me.",
-      "To me, this matters because once that label gets attached, people stop slowing down and start acting like every later problem already makes sense."
+      "I keep this separate because this is where the overdose / unstable label starts sticking to me.",
+      "To me, this matters because once that label gets attached, people stop slowing down and start acting like every later problem already explains itself."
     ];
   }
   if (s.includes('lead-in')) {
     return [
       "This is the lead-in section. I need it here so the story does not start too late.",
-      "If this gets ignored, then 12/20 looks like it came out of nowhere, and I don't think that is honest."
+      "If this gets ignored, then 12/20 looks like it came out of nowhere, and I do not think that is honest."
     ];
   }
   if (s.includes('ems contact')) {
@@ -868,31 +856,31 @@ function getSectionTone(sectionTitle){
   if (s.includes('handoff') || s.includes('containment') || s.includes('security')) {
     return [
       "This part matters because I do not think the scene was just naturally unfolding.",
-      "I think people were steering me, pointing me, containing me, and deciding what role I was supposed to be in before the final story even got locked."
+      "I think people were steering me, pointing me, containing me, and deciding what role I was supposed to be in before the final story got locked."
     ];
   }
   if (s.includes('seminole cop')) {
     return [
-      "I keep this officer separate because I don't want the early contact erased just because Clay became the face of the case.",
+      "I keep this officer separate because I do not want the early contact erased just because Clay became the face of the case.",
       "The beginning matters too. If the beginning gets washed out, the story gets cleaner for them."
     ];
   }
   if (s.includes('staged') || s.includes('battery-on-officer')) {
     return [
       "This is the heart of the criminal case.",
-      "If the so-called slap / hit was staged, exaggerated, or built out of movement they helped create, then everything stacked on top of that charge gets shaky fast."
+      "If the so-called slap / hit was staged, exaggerated, or built out of movement they helped create, then everything stacked on top of it needs to be questioned."
     ];
   }
   if (s.includes('baker act')) {
     return [
-      "I do not see the Baker Act language in this case as neutral.",
-      "I see it as one of the tools that kept getting used to move me, contain me, explain me, and shut me up."
+      "I do not see the Baker Act language here as neutral.",
+      "I think it kept being used as a way to move me, explain me, contain me, and make people less likely to listen."
     ];
   }
   if (s.includes('cad') || s.includes('dispatch') || s.includes('report changes')) {
     return [
       "This is one of the paper-trail buckets that keeps bothering me.",
-      "Even if every single discrepancy does not prove a conspiracy by itself, enough timing shifts and wording changes start telling their own story."
+      "Even if every discrepancy does not prove a giant plot by itself, enough wording and timing shifts start telling their own story."
     ];
   }
   if (s.includes('transport') || s.includes('r_clay')) {
@@ -922,25 +910,25 @@ function getSectionTone(sectionTitle){
   if (s.includes('court start') || s.includes('malicious prosecution')) {
     return [
       "This is where a bad story stops being a messy incident and starts becoming a case that keeps moving anyway.",
-      "That matters to me because once they had a usable version, I don't think the system slowed down to ask whether it was true."
+      "That matters because once they had a usable version, I do not think the system slowed down to ask whether it was true."
     ];
   }
   if (s.includes('pre-trial') || s.includes('public defender') || s.includes('legal access')) {
     return [
       "This is one of the biggest fairness buckets.",
-      "I do not think I got a real shot. Not enough time. Not enough access. Not enough room to review. Not enough actual defense."
+      "I do not think I got a real shot. Not enough time. Not enough access. Not enough actual defense."
     ];
   }
   if (s.includes('jury') || s.includes('voir dire')) {
     return [
-      "I care about this because the people deciding my case were not just random blank faces to me.",
-      "Some of them had backgrounds and conflicts that should have been explored harder, and I don't think that was done."
+      "I care about this because the people deciding my case were not just random blanks to me.",
+      "Some of them had backgrounds and conflicts that should have mattered more than they did."
     ];
   }
   if (s.includes('appeal')) {
     return [
       "This matters because even after conviction I still should have had a real path to push back.",
-      "If that path got slowed down, discouraged, or clogged up, then that is part of the harm too."
+      "If that path got slowed down or discouraged, that becomes part of the story too."
     ];
   }
   if (s.includes('second jail stay')) {
@@ -951,8 +939,8 @@ function getSectionTone(sectionTitle){
   }
   if (s.includes('car video') || s.includes('blinking lights')) {
     return [
-      "This is one of the stranger memory / evidence buckets, but I keep it because I do not want to erase my own experience just because it is harder to explain fast.",
-      "Some of this still needs cleaner pinning. That is why I leave it in review instead of pretending it doesn't matter."
+      "This is one of the harder memory / evidence buckets, but I keep it because I do not want to erase my own experience just because it is harder to explain fast.",
+      "Some of this still needs cleaner pinning. That is why I leave it here as review instead of pretending it does not matter."
     ];
   }
   if (s.includes('public-pattern') || s.includes('camera already caught')) {
@@ -993,9 +981,6 @@ function getSectionTone(sectionTitle){
 }
 
 function buildOwnWords(sectionTitle, itemText){
-  const key = sectionTitle + '||' + itemText;
-  if (ownWordsCache[key]) return ownWordsCache[key];
-
   const lower = itemText.toLowerCase();
   const paras = [];
   const tone = getSectionTone(sectionTitle);
@@ -1006,97 +991,74 @@ function buildOwnWords(sectionTitle, itemText){
   if (/zoloft|sertraline/.test(lower)) {
     pushUnique(paras, "I keep bringing up Zoloft because I do not think it is just background noise. If that medication was started, stopped, or handled wrong, then what happened to me afterward cannot honestly be read like it came out of nowhere.");
   }
-
   if (/directions for living|manuela|adhd|depression|medication/.test(lower)) {
     pushUnique(paras, "To me this is part of the failure-to-help bucket. I was in contact with people who were supposed to stabilize things, and instead I felt more exposed, more mislabeled, and easier to write off.");
   }
-
   if (/safe harbor|narcan|overdose/.test(lower)) {
     pushUnique(paras, "I think this part gave them a ready-made label for me. Once “overdose,” “drug,” or “unstable” starts attaching to your name, people stop asking harder questions and start acting like the rest explains itself.");
   }
-
   if (/ems|midazolam|versed|chemical restraint|drugged|sedat/.test(lower)) {
-    pushUnique(paras, "This is one of the reasons I am still pushing so hard. I do not believe they should have been able to restrain and sedate me the way they did, then turn around and act like everything after that was still voluntary, clear, and reliable.");
+    pushUnique(paras, "This is one of the reasons I am still pushing so hard. I do not believe they should have been able to restrain and sedate me the way they did, then act like everything after that was still voluntary, clear, and reliable.");
     pushUnique(paras, "When I say this matters, I mean it changes intent, memory, body control, fear, and the whole power balance. After that point I was not operating like a free and normal person.");
   }
-
   if (/right to refuse|consent|needle/.test(lower)) {
     pushUnique(paras, "I said no. That matters to me in a really basic human way. I was not volunteering to be drugged. So when this gets written up like a routine medical step, it strips the violence out of what it actually felt like.");
   }
-
   if (/hospital|containment|security|cheeseman|carlotta|handoff/.test(lower)) {
     pushUnique(paras, "The hospital piece matters because that is where the medical world, the security world, and the police world blur together in a way that still feels wrong to me.");
   }
-
   if (/seminole cop/.test(lower)) {
     pushUnique(paras, "I keep this officer in the checklist because I do not want the earlier contact erased just because the final charge got attached to Clay.");
   }
-
   if (/slap|battery|hit|off-balanced|off balance/.test(lower)) {
     pushUnique(paras, "This point matters because the whole criminal case is hanging off of this contact. If the movement was created, exaggerated, misread, or staged, then everything built on top of it needs to be questioned.");
     pushUnique(paras, "Emotionally, this is the part that makes me feel the most railroaded, because one moment gets simplified and then used to swallow the whole rest of the story.");
   }
-
   if (/baker act/.test(lower)) {
-    pushUnique(paras, "I do not think Baker Act language was just neutral paperwork here. I think it kept being used as a way to move me, explain me, contain me, and make people less likely to listen.");
+    pushUnique(paras, "I do not think Baker Act language was just neutral paperwork here. I think it kept being used to move me, explain me, contain me, and make people less likely to listen.");
   }
-
   if (/cad|dispatch|report|supplement|affidavit|statement|witness/.test(lower)) {
     pushUnique(paras, "This is one of the paper-trail issues that keeps eating at me. I know paperwork can outlive memory, and that is exactly why wording and timing matter so much.");
   }
-
   if (/threat|kick your ass|gorilla mode|tase|restraint chair|threw.*wall|throw/.test(lower)) {
     pushUnique(paras, "This is not just rude cop talk to me. This is part of the intimidation bucket. It matters because it shows what kind of energy I was actually dealing with while under their control.");
   }
-
   if (/camera|body-cam|dash-cam|muted|blocked|missing footage|lights|blink|audio/.test(lower)) {
     pushUnique(paras, "I keep these camera issues here because when I could not defend myself in real time, the footage became the next best witness. So every blocked angle, mute gap, and missing chunk matters.");
   }
-
   if (/sexual|strip|prea|cough-strip|naked|exposure|doorway|choke|choking|cup-in-ear/.test(lower)) {
     pushUnique(paras, "This part is hard because it is ugly and easy for other people to want to skip over. I do not want it skipped. This is its own harm, not just a side complaint.");
   }
-
   if (/first jail stay|non-cooperative|non-coop|goon squad|isolation|no lawyer|no phone|no shower|toilet paper/.test(lower)) {
     pushUnique(paras, "This belongs to the first jail stay and I need that understood every time. The first stay was where I felt the most buried, the most cut off, and the least protected.");
   }
-
   if (/malicious prosecution|false case|carried forward|known lies/.test(lower)) {
     pushUnique(paras, "This matters because at some point it stops being about a messy incident and starts becoming about who kept a bad story moving anyway.");
   }
-
   if (/trial booklet|continuance|legal access|lawyer|public defender|shelly perry|motions ignored|jury instructions/.test(lower)) {
     pushUnique(paras, "This is one of the biggest fairness buckets. I do not think I was given a real shot. Not enough time, not enough access, and not enough actual defense.");
   }
-
   if (/juror|voir dire|boggs|flowers|norton|malone|stacked jury|jury pool/.test(lower)) {
     pushUnique(paras, "I care about this because the people deciding my fate were not just random blanks to me. Some had backgrounds that should have mattered more than they did.");
   }
-
   if (/appeal|post-trial/.test(lower)) {
-    pushUnique(paras, "This matters because even after conviction I still should have had a real path to push back. If that path was slowed down or clogged up, that becomes part of the story too.");
+    pushUnique(paras, "This matters because even after conviction I still should have had a real path to push back. If that path got slowed down or discouraged, that becomes part of the story too.");
   }
-
   if (/second jail stay|work|gallbladder|dehydration|headphones|pod|mail/.test(lower)) {
     pushUnique(paras, "This belongs to the second jail stay, not the first. I keep saying that because the second stay was more about pressure, pain, legal access, and retaliation fear than the original blackout type harm.");
   }
-
   if (/gunshot|stomach|blinking lights|car-video/.test(lower)) {
     pushUnique(paras, "This is one of the harder memory buckets, but I keep it because I do not want to erase my own experience just because it is harder to prove quickly.");
   }
-
   if (/code|statute|case-law|u\.s\.c|fla\. stat|authority/.test(lower)) {
     pushUnique(paras, "I was trying to give the chaos some legal shape. I was not doing this to sound smart. I was doing it because I needed some language for what felt wrong.");
   }
-
   if (/complaint|oversight|accountability|public-records|records route/.test(lower)) {
     pushUnique(paras, "This matters because I kept getting nowhere inside the system. So the complaint and oversight routes became part of survival, not just paperwork.");
   }
-
   if (/pull|preserve|demand|raw footage|metadata|docket|transcript/.test(lower)) {
     pushUnique(paras, "This is me trying to stop things from disappearing. The case only gets cleaner for them if the documents, logs, and raw footage stay scattered or vanish.");
   }
-
   if (/separate|blur|themes/.test(lower)) {
     pushUnique(paras, "Blurring is one of the main ways this whole thing gets used against me. Once it all gets mashed together, I sound inconsistent. When it stays separated, it makes more sense.");
   }
@@ -1105,26 +1067,15 @@ function buildOwnWords(sectionTitle, itemText){
     pushUnique(paras, "Even if this looks like a small detail, I know from how this case has gone that small details are exactly where the bigger distortions hide.");
   }
 
-  ownWordsCache[key] = paras;
   return paras;
 }
 
-function displayFilesForItem(itemId) {
-  const container = document.querySelector(`[data-files="${itemId}"]`);
-  if (!container) return;
-
-  const files = JSON.parse(localStorage.getItem(`files_${itemId}`) || '[]');
-  container.innerHTML = '';
-
-  files.forEach((file, idx) => {
-    const fileDiv = document.createElement('div');
-    fileDiv.className = 'file-item';
-    fileDiv.innerHTML = `
-      <a href="${file.data}" download="${file.name}">📎 ${file.name} (${(file.size/1024).toFixed(1)}KB)</a>
-      <button class="delete-file-btn" data-delete-file="${itemId}" data-file-index="${idx}">Delete</button>
-    `;
-    container.appendChild(fileDiv);
-  });
+function saveFiles(itemId, files){
+  localStorage.setItem(`files_${itemId}`, JSON.stringify(files));
+}
+function loadFiles(itemId){
+  try { return JSON.parse(localStorage.getItem(`files_${itemId}`) || '[]'); }
+  catch(e){ return []; }
 }
 
 function render(){
@@ -1137,23 +1088,13 @@ function render(){
   sections.forEach(section => {
     const sec = document.createElement('div');
     sec.className = 'section';
-    sec.dataset.open = 'true';
 
     const head = document.createElement('div');
     head.className = 'section-header';
-
-    const left = document.createElement('div');
-    left.innerHTML = `
+    head.innerHTML = `
       <h2 class="section-title">${esc(section.title)}</h2>
       <div class="section-meta">${section.items.length} item(s)</div>
     `;
-
-    const right = document.createElement('div');
-    right.className = 'small';
-    right.textContent = 'Click to collapse';
-
-    head.appendChild(left);
-    head.appendChild(right);
 
     const body = document.createElement('div');
     body.className = 'section-body';
@@ -1165,10 +1106,9 @@ function render(){
       const isChecked = !!checks[item.id];
       if (isChecked) checked++;
 
-      const ownText = buildOwnWords(section.title, item.text).join(' ').toLowerCase();
-      const blob = `${section.title} ${item.stars} ${item.proof} ${item.text} ${ownText}`.toLowerCase();
-      const matches = !q || blob.includes(q);
-      const show = matches && (!checkedOnly || isChecked);
+      const storyText = buildOwnWords(section.title, item.text).join(' ').toLowerCase();
+      const blob = `${section.title} ${item.stars} ${item.proof} ${item.text} ${storyText}`.toLowerCase();
+      const show = (!q || blob.includes(q)) && (!checkedOnly || isChecked);
 
       if (show) {
         secVisible++;
@@ -1180,7 +1120,9 @@ function render(){
       row.dataset.id = item.id;
       row.dataset.visible = show ? '1' : '0';
 
-      const isOpen = !!ownOpen[item.id];
+      const storyParas = buildOwnWords(section.title, item.text)
+        .map(p => `<p>${highlight(p, q)}</p>`)
+        .join('');
 
       row.innerHTML = `
         <input type="checkbox" ${isChecked ? 'checked' : ''} />
@@ -1192,41 +1134,27 @@ function render(){
 
           <div class="text">${highlight(item.text, q)}</div>
 
-          <div class="expand-line">
-            <button class="caret-btn" data-toggle-own="${item.id}" aria-label="Toggle own words">${isOpen ? '▾' : '▸'}</button>
-            <span class="ownwords-label" data-toggle-own="${item.id}">in my own words</span>
-          </div>
-
-          <div class="ownwords-content ${isOpen ? 'open' : ''}" data-own-content="${item.id}">
-            <div class="ownwords-title">In my own words</div>
-            ${buildOwnWords(section.title, item.text).map(p => `<p>${highlight(p, q)}</p>`).join('')}
-          </div>
+          <details class="story">
+            <summary><span class="story-caret">▸</span><span>show my story</span></summary>
+            <div class="story-box">
+              <div class="story-title">In my own words</div>
+              ${storyParas}
+            </div>
+          </details>
 
           <div class="item-files">
             <input type="file" id="file-${item.id}" class="file-input" accept=".txt,image/*,.pdf,.doc,.docx" />
-            <button class="upload-btn" data-upload-trigger="${item.id}">📤 Upload file</button>
-            <div data-files="${item.id}"></div>
+            <button class="upload-btn" data-upload="${item.id}">📤 Upload file</button>
+            <div class="files-wrap" data-files="${item.id}"></div>
           </div>
         </div>
       `;
+
       body.appendChild(row);
     });
 
     if (secVisible > 0) {
       visibleSections++;
-      head.addEventListener('click', () => {
-        const open = sec.dataset.open === 'true';
-        sec.dataset.open = (!open).toString();
-        const meta = sec.querySelector('.small');
-        if (open) {
-          body.style.display = 'none';
-          meta.textContent = 'Click to expand';
-        } else {
-          body.style.display = '';
-          meta.textContent = 'Click to collapse';
-        }
-      });
-
       sec.appendChild(head);
       sec.appendChild(body);
       app.appendChild(sec);
@@ -1240,39 +1168,94 @@ function render(){
   document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
 
   document.querySelectorAll('.item input[type="checkbox"]').forEach(cb => {
-    const row = cb.closest('.item');
     cb.addEventListener('change', e => {
-      const id = row.dataset.id;
+      const id = e.target.closest('.item').dataset.id;
       if (e.target.checked) checks[id] = true;
       else delete checks[id];
-      saveState(stateKeyChecks, checks);
+      saveChecks(checks);
       render();
     });
   });
 
-  document.querySelectorAll('[data-toggle-own]').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = el.getAttribute('data-toggle-own');
-      if (ownOpen[id]) delete ownOpen[id];
-      else ownOpen[id] = true;
-      saveState(stateKeyOwn, ownOpen);
-      render();
-    });
-  });
-
-  document.querySelectorAll('[data-upload-trigger]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.getAttribute('data-upload-trigger');
+  document.querySelectorAll('[data-upload]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = btn.getAttribute('data-upload');
       const input = document.getElementById(`file-${id}`);
       if (input) input.click();
     });
   });
 
   document.querySelectorAll('.file-input').forEach(input => {
-    input.addEventListener('change', (e) => {
-      const file = e.target.files[0];
+    input.addEventListener('change', e => {
+      const file = e.target.files && e.target.files[0];
       if (!file) return;
       const row = e.target.closest('.item');
-      const itemId = row.dataset.id
+      const itemId = row.dataset.id;
+
+      const reader = new FileReader();
+      reader.onload = function(evt){
+        const files = loadFiles(itemId);
+        files.push({
+          name: file.name,
+          size: file.size,
+          data: evt.target.result,
+          timestamp: new Date().toLocaleString()
+        });
+        saveFiles(itemId, files);
+        render();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  document.querySelectorAll('[data-files]').forEach(el => {
+    const itemId = el.getAttribute('data-files');
+    const files = loadFiles(itemId);
+    el.innerHTML = '';
+    files.forEach((file, idx) => {
+      const box = document.createElement('div');
+      box.className = 'file-item';
+      box.innerHTML = `
+        <a href="${file.data}" download="${esc(file.name)}">📎 ${esc(file.name)} (${(file.size/1024).toFixed(1)}KB)</a>
+        <button class="delete-file-btn" data-delete="${itemId}" data-index="${idx}">Delete</button>
+      `;
+      el.appendChild(box);
+    });
+  });
+
+  document.querySelectorAll('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const itemId = btn.getAttribute('data-delete');
+      const idx = Number(btn.getAttribute('data-index'));
+      const files = loadFiles(itemId);
+      files.splice(idx, 1);
+      saveFiles(itemId, files);
+      render();
+    });
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('showCheckedOnly').addEventListener('change', render);
+
+document.getElementById('checkVisible').addEventListener('click', () => {
+  document.querySelectorAll('.item[data-visible="1"]').forEach(el => {
+    checks[el.dataset.id] = true;
+  });
+  saveChecks(checks);
+  render();
+});
+
+document.getElementById('clearVisible').addEventListener('click', () => {
+  document.querySelectorAll('.item[data-visible="1"]').forEach(el => {
+    delete checks[el.dataset.id];
+  });
+  saveChecks(checks);
+  render();
+});
+
+document.getElementById('copyVisible').addEventListener('click', async () => {
+  const out = [];
+  document.querySelectorAll('.section').forEach(sectionEl => {
+    const title = sectionEl.querySelector('.section-title')?.innerText?.trim();
+    const items = [...sectionEl.querySelectorAll
