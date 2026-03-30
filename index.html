@@ -3,203 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checklist</title>
+<title>Bank 1 Case System</title>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background:#0b1020;
-  color:#eaf0ff;
-  margin:0;
-  padding:20px;
-}
+body {font-family:Arial;background:#0b1020;color:#eaf0ff;padding:15px;}
+h1 {margin-bottom:10px;}
+input {width:100%;padding:10px;margin-bottom:15px;border-radius:8px;border:none;}
 
-.section {
-  margin-bottom:20px;
-  border:1px solid #2b3a5f;
-  border-radius:10px;
-  background:#121a2b;
-}
-
-.section-header {
-  padding:12px;
-  cursor:pointer;
-  background:#18233a;
-}
-
-.item {
-  padding:12px;
-  border-top:1px solid #2b3a5f;
-}
-
-.text {
-  margin:8px 0;
-}
-
-.toggle {
-  cursor:pointer;
-  background:#213b65;
-  border:none;
-  padding:8px;
-  border-radius:6px;
-  color:white;
-  font-size:13px;
-}
-
-.toggle:hover {
-  background:#294777;
-}
-
-.ownwords {
-  display:none;
-  margin-top:10px;
-  padding:10px;
-  background:#0b1324;
-  border-radius:8px;
-}
-
-.upload-btn {
-  margin-top:10px;
-  padding:6px 10px;
-  background:#6ea8fe;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  color:black;
-  font-size:12px;
-}
-
-.file-item {
-  font-size:12px;
-  margin-top:5px;
-}
+.section {border:1px solid #2b3a5f;border-radius:10px;margin-bottom:15px;background:#121a2b;}
+.section-header {padding:12px;background:#18233a;font-weight:bold;}
+.item {padding:10px;border-top:1px solid #2b3a5f;}
+.toggle {margin-top:6px;background:#213b65;color:white;border:none;padding:6px;border-radius:6px;}
+.own {display:none;margin-top:8px;padding:8px;background:#0b1324;border-radius:6px;}
+textarea {width:100%;margin-top:5px;border-radius:6px;}
+.upload {margin-top:6px;padding:6px;background:#6ea8fe;border:none;border-radius:6px;}
+.file {font-size:12px;}
+.timeline {background:#091226;padding:10px;border-radius:10px;margin-bottom:20px;}
 </style>
 </head>
 
 <body>
 
-<h2>Checklist</h2>
+<h1>Bank 1 Case File</h1>
+<input id="search" placeholder="Search all events, notes, evidence...">
+
+<div class="timeline">
+<b>Key Timeline Events</b><br><br>
+2:12–2:15 — Officer confirms ER location and movement<br>
+2:17 — Requests discharge paperwork<br>
+2:21–2:23 — Confirms active bleeding<br>
+</div>
 
 <div id="app"></div>
 
 <script>
-const rawChecklist = `
-1. Example Section
 
-[ ] ★★★★★ [DOC] Example checklist item one
-[ ] ★★★★☆ [VID] Another checklist item
-`;
+const data = [
 
-function parseChecklist(text){
-  const lines = text.split('\n');
-  let sections = [];
-  let current = null;
+{
+title:"Hospital / Immediate Arrest",
+items:[
+{
+text:"Officer confirms he is in ER and bringing me forward",
+own:"I was still in the hospital environment receiving care when the officer took control of the situation. I had not completed treatment or been properly discharged.",
+},
+{
+text:"Officer requests discharge paperwork",
+own:"They were already trying to move me through the system before I had actually been medically cleared.",
+},
+{
+text:"Officer states I am bleeding",
+own:"There is clear acknowledgment from the officer that I was actively bleeding. This confirms a medical issue was happening in real time.",
+}
+]
+},
 
-  lines.forEach(line=>{
-    line = line.trim();
-    if(!line) return;
+{
+title:"Medical Condition / Neglect",
+items:[
+{
+text:"IV came out / bleeding issue",
+own:"My IV had come out or was removed and I was bleeding. This required attention and should have paused everything else.",
+},
+{
+text:"No proper stabilization before custody",
+own:"I was not stabilized medically before being taken into custody, which could have worsened my condition.",
+}
+]
+},
 
-    if(/^\d+\./.test(line)){
-      current = {title:line, items:[]};
-      sections.push(current);
-    }
-    else if(line.startsWith('[ ]')){
-      current.items.push({
-        text: line.replace(/^\[ \]\s*/,'')
-      });
-    }
-  });
+{
+title:"Officer Conduct",
+items:[
+{
+text:"Continued arrest despite visible medical issue",
+own:"Even after recognizing the situation, the officer continued with arrest procedures instead of addressing the medical issue.",
+},
+{
+text:"Ignored urgency of bleeding",
+own:"The officer acknowledged the bleeding but did not prioritize stopping it or getting proper treatment.",
+}
+]
+},
 
-  return sections;
+{
+title:"Custody / Processing",
+items:[
+{
+text:"Transition from medical to custody without clearance",
+own:"I was moved from a medical situation directly into custody without proper clearance or documentation.",
+},
+{
+text:"Focus on custody over care",
+own:"The actions taken show that custody was prioritized over my immediate health and safety.",
+}
+]
 }
 
-function buildOwnWords(text){
-  return "This is your expanded explanation for: " + text;
-}
+];
+
+const state = JSON.parse(localStorage.getItem("bank1")||"{}");
+
+function save(){localStorage.setItem("bank1",JSON.stringify(state));}
 
 function render(){
-  const app = document.getElementById('app');
-  app.innerHTML = '';
+const app=document.getElementById("app");
+app.innerHTML="";
+const q=document.getElementById("search").value.toLowerCase();
 
-  const sections = parseChecklist(rawChecklist);
+data.forEach((sec,s)=>{
+const div=document.createElement("div");
+div.className="section";
 
-  sections.forEach(section=>{
-    const sec = document.createElement('div');
-    sec.className = 'section';
+const head=document.createElement("div");
+head.className="section-header";
+head.textContent=sec.title;
 
-    const head = document.createElement('div');
-    head.className = 'section-header';
-    head.textContent = section.title;
+const body=document.createElement("div");
 
-    const body = document.createElement('div');
+sec.items.forEach((item,i)=>{
 
-    section.items.forEach((item, i)=>{
-      const row = document.createElement('div');
-      row.className = 'item';
+const key=s+"-"+i;
+const full=(item.text+" "+item.own).toLowerCase();
+if(q && !full.includes(q)) return;
 
-      const text = document.createElement('div');
-      text.className = 'text';
-      text.textContent = item.text;
+const row=document.createElement("div");
+row.className="item";
 
-      const toggle = document.createElement('button');
-      toggle.className = 'toggle';
-      toggle.innerHTML = '▶ In my own words';
+const cb=document.createElement("input");
+cb.type="checkbox";
+cb.checked=state[key]?.c||false;
+cb.onchange=()=>{state[key]=state[key]||{};state[key].c=cb.checked;save();};
 
-      const own = document.createElement('div');
-      own.className = 'ownwords';
-      own.textContent = buildOwnWords(item.text);
+const text=document.createElement("div");
+text.textContent=item.text;
 
-      toggle.onclick = ()=>{
-        if(own.style.display === 'block'){
-          own.style.display = 'none';
-          toggle.innerHTML = '▶ In my own words';
-        } else {
-          own.style.display = 'block';
-          toggle.innerHTML = '▼ In my own words';
-        }
-      };
+const toggle=document.createElement("button");
+toggle.className="toggle";
 
-      // FILE UPLOAD
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.style.display = 'none';
+const own=document.createElement("div");
+own.className="own";
 
-      const uploadBtn = document.createElement('button');
-      uploadBtn.className = 'upload-btn';
-      uploadBtn.textContent = 'Upload file';
+const ta=document.createElement("textarea");
+ta.rows=4;
+ta.value=state[key]?.n||item.own;
+ta.oninput=()=>{state[key]=state[key]||{};state[key].n=ta.value;save();};
 
-      const fileList = document.createElement('div');
+own.appendChild(ta);
 
-      uploadBtn.onclick = ()=> fileInput.click();
+const open=state[key]?.o||false;
+own.style.display=open?"block":"none";
+toggle.innerHTML=open?"▼ In my own words":"▶ In my own words";
 
-      fileInput.onchange = ()=>{
-        const file = fileInput.files[0];
-        if(!file) return;
+toggle.onclick=()=>{
+const isOpen=own.style.display==="block";
+own.style.display=isOpen?"none":"block";
+toggle.innerHTML=isOpen?"▶ In my own words":"▼ In my own words";
+state[key]=state[key]||{};
+state[key].o=!isOpen;
+save();
+};
 
-        const div = document.createElement('div');
-        div.className = 'file-item';
-        div.textContent = file.name;
+const fileInput=document.createElement("input");
+fileInput.type="file";
+fileInput.style.display="none";
 
-        fileList.appendChild(div);
-      };
+const btn=document.createElement("button");
+btn.className="upload";
+btn.textContent="Upload evidence";
 
-      row.appendChild(text);
-      row.appendChild(toggle);
-      row.appendChild(own);
-      row.appendChild(uploadBtn);
-      row.appendChild(fileInput);
-      row.appendChild(fileList);
+const list=document.createElement("div");
 
-      body.appendChild(row);
-    });
+(state[key]?.f||[]).forEach(f=>{
+const d=document.createElement("div");
+d.className="file";
+d.textContent=f;
+list.appendChild(d);
+});
 
-    sec.appendChild(head);
-    sec.appendChild(body);
-    app.appendChild(sec);
-  });
+btn.onclick=()=>fileInput.click();
+
+fileInput.onchange=()=>{
+const f=fileInput.files[0];
+if(!f) return;
+state[key]=state[key]||{};
+state[key].f=state[key].f||[];
+state[key].f.push(f.name);
+save();
+const d=document.createElement("div");
+d.className="file";
+d.textContent=f.name;
+list.appendChild(d);
+};
+
+row.appendChild(cb);
+row.appendChild(text);
+row.appendChild(toggle);
+row.appendChild(own);
+row.appendChild(btn);
+row.appendChild(fileInput);
+row.appendChild(list);
+
+body.appendChild(row);
+
+});
+
+div.appendChild(head);
+div.appendChild(body);
+app.appendChild(div);
+
+});
 }
 
+document.getElementById("search").addEventListener("input",render);
+
 render();
+
 </script>
 
 </body>
